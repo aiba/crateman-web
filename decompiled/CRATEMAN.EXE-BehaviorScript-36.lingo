@@ -1,0 +1,10 @@
+on exitFrame
+  global puzzle, speed
+  set speed to 0
+  go("SELECT")
+  checkbuttons()
+  if puzzle <> 0 then
+    go("rs")
+  end if
+  go(the frame)
+end

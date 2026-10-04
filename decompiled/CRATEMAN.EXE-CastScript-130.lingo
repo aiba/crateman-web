@@ -1,0 +1,6 @@
+on mouseUp
+  set the castNum of sprite 46 to 150
+  puppetSound("click5.wav")
+  updateStage()
+  go("demo1")
+end

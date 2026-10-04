@@ -1,0 +1,30 @@
+on writescores
+  global GWRITEOBJECT, ALLSCORE, SCOREFIL, SCOREP, CODEWORDP, CODEWORD, SS1, HJJ, solnum, puzzle
+  if objectp(MYFILE) then
+    set MYFILE to 0
+  end if
+  set MYFILE to new(xtra("FILEIO"))
+  set HJJ to EMPTY
+  set SS1 to "0,"
+  repeat with n = 1 to 50
+    if getAt(solnum, n) = 0 then
+      set SS1 to "0,"
+    end if
+    if getAt(solnum, n) = 1 then
+      set SS1 to "1,"
+    end if
+    if n = puzzle then
+      set SS1 to "1,"
+    end if
+    set HJJ to HJJ & SS1
+  end repeat
+  set thefile to HJJ
+  set CODEWORD to HJJ & "0,"
+  CIPHER()
+  set HJJ to CODEWORD
+  createFile(MYFILE, the moviePath & "Crateman.skr")
+  openFile(MYFILE, the moviePath & "Crateman.skr", 0)
+  writeString(MYFILE, HJJ)
+  closeFile(MYFILE)
+  set MYFILE to 0
+end

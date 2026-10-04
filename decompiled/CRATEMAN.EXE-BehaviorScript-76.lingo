@@ -1,0 +1,14 @@
+on exitFrame
+  if rollOver(49) then
+    set the castNum of sprite 49 to cast "AOFORM1"
+  else
+    set the castNum of sprite 49 to cast "AOFORM0"
+  end if
+  if rollOver(50) then
+    set the castNum of sprite 50 to cast "OLRET2"
+  else
+    set the castNum of sprite 50 to cast "OLRET1"
+  end if
+  updateStage()
+  go(the frame)
+end

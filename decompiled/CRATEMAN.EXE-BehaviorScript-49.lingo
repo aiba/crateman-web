@@ -1,0 +1,10 @@
+on exitFrame
+  global UPG
+  puppetSprite(36, 1)
+  if UPG = 0 then
+    set the castNum of sprite 36 to cast "panel0"
+  end if
+  if UPG = 1 then
+    set the castNum of sprite 36 to cast "panel1"
+  end if
+end

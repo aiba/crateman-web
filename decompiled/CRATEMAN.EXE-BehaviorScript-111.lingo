@@ -1,0 +1,63 @@
+on exitFrame
+  global UPG, dotx, doty, puzzle, loadpuzzle, solnum, solutionflag, solutioncnt, bridgeflag
+  set bridgeflag to 0
+  set the keyUpScript to EMPTY
+  repeat with n = 12 to 15
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+  repeat with n = 19 to 22
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+  set solutionflag to 0
+  set solutioncnt to 0
+  set loadpuzzle to 0
+  puppetSprite(46, 1)
+  set the mouseDownScript to "getthepuzzle"
+  puppetSound("select.wav")
+  set puzzle to 0
+  set the text of field "puzzletextnum" to "Puzzle: " & string(puzzle)
+  puppetSprite(44, 1)
+  puppetSprite(42, 1)
+  if UPG = 0 then
+    set the castNum of sprite 36 to cast "panel0"
+  end if
+  if UPG = 1 then
+    set the castNum of sprite 36 to cast "panel1"
+  end if
+  set the locH of sprite 44 to -2000
+  set the locV of sprite 44 to -2000
+  puppetSprite(43, 1)
+  set the trails of sprite 43 to 1
+  set the locH of sprite 43 to -2000
+  set the locV of sprite 43 to -2000
+  updateStage()
+  if UPG = 0 then
+    set upgn to 10
+  end if
+  if UPG = 1 then
+    set upgn to 50
+  end if
+  repeat with n = 1 to upgn
+    if getAt(solnum, n) = 0 then
+      set the castNum of sprite 43 to 106
+    end if
+    if getAt(solnum, n) = 1 then
+      set the castNum of sprite 43 to 105
+    end if
+    set the locH of sprite 43 to getAt(dotx, n)
+    set the locV of sprite 43 to getAt(doty, n)
+    updateStage()
+  end repeat
+  set the locH of sprite 43 to -2000
+  set the locV of sprite 43 to -2000
+  updateStage()
+  puppetSprite(43, 0)
+  repeat with n = 25 to 30
+    puppetSprite(n, 1)
+    set the castNum of sprite n to 66 + n
+  end repeat
+end

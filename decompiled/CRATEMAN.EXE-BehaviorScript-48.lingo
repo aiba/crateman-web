@@ -1,0 +1,6 @@
+on exitFrame
+  global gridx, gridy, gridval
+  puppetSprite(48, 1)
+  set the locH of sprite 48 to -2000
+  set the locV of sprite 48 to -2000
+end

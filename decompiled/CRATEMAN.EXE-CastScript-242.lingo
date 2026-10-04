@@ -1,0 +1,9 @@
+on mouseUp
+  global WHICHDOC
+  puppetSound("click5.wav")
+  set the locH of sprite 47 to -2000
+  set the locV of sprite 47 to -2000
+  updateStage()
+  set WHICHDOC to 1
+  printtext(field "ordform")
+end

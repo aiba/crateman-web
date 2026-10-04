@@ -1,0 +1,3 @@
+on exitFrame
+  puppetSound("doorsnd.wav")
+end

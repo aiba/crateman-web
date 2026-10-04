@@ -1,0 +1,50 @@
+on exitFrame
+  global crate, mg, gameover, bridgeflag, solutionflag, res, puzzle, doornum, doorflag, dr, loadpuzzle, speed
+  if solutionflag = 1 then
+    GETDIR()
+  end if
+  checkbridge()
+  checkforcrate()
+  if (gameover = 1) and (puzzle <> 51) and (solutionflag = 1) then
+    set gameover to 50
+  end if
+  if gameover = 50 then
+    puppetSprite(48, 0)
+    puppetSprite(47, 0)
+    set solutionflag to 0
+    go("rs")
+  end if
+  if (gameover = 1) and (puzzle <> 51) and (solutionflag = 0) then
+    go("gover")
+  end if
+  manfall()
+  if doorflag = 0 then
+    checkdoors()
+  end if
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "PSOL2"
+  else
+    set the castNum of sprite 48 to cast "PSOL1"
+  end if
+  if speed = 0 then
+    if rollOver(47) then
+      set the castNum of sprite 47 to cast "SPBUT2"
+    else
+      set the castNum of sprite 47 to cast "SPBUT1"
+    end if
+  end if
+  if speed = 1 then
+    if rollOver(47) then
+      set the castNum of sprite 47 to cast "SPBUT4"
+    else
+      set the castNum of sprite 47 to cast "SPBUT3"
+    end if
+  end if
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  go(the frame)
+end

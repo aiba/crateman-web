@@ -1,0 +1,37 @@
+on exitFrame
+  global crate, mg, gameover, bridgeflag, solutionflag, doornum, doorflag, KY, puzzle, loadpuzzle
+  set the castNum of sprite 47 to cast "Continue1"
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "Qdemo2"
+  else
+    set the castNum of sprite 48 to cast "Qdemo1"
+  end if
+  GETDIR()
+  checkbridge()
+  checkforcrate()
+  if gameover = 1 then
+    puppetSprite(46, 0)
+    repeat with n = 12 to 15
+      set the locH of sprite n to -2000
+      set the locV of sprite n to -2000
+    end repeat
+    repeat with n = 19 to 22
+      set the locH of sprite n to -2000
+      set the locV of sprite n to -2000
+    end repeat
+    updateStage()
+    set puzzle to 0
+    set loadpuzzle to 0
+    puppetSprite(47, 0)
+    puppetSprite(48, 0)
+    go("beg")
+  end if
+  manfall()
+  if doorflag = 0 then
+    checkdoors()
+  end if
+  if KY = 100 then
+    go("DEMO2")
+  end if
+  go(the frame)
+end

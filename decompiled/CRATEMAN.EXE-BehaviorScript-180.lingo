@@ -1,0 +1,12 @@
+on exitFrame
+  global puzzle, speed
+  set the text of field "playsoltext" to "Playing Solution for Puzzle: " & string(puzzle)
+  repeat with n = 25 to 30
+    set the castNum of sprite n to 66 + n
+    updateStage()
+    puppetSprite(n, 0)
+  end repeat
+  puppetSprite(48, 1)
+  puppetSprite(47, 1)
+  set speed to 0
+end

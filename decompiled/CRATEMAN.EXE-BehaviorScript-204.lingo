@@ -1,0 +1,15 @@
+on enterFrame
+  global SOND
+  if SOND = 0 then
+    set the castNum of sprite 47 to cast "SNDBUT1"
+  end if
+  if SOND = 1 then
+    set the castNum of sprite 47 to cast "SNDBUT2"
+  end if
+  updateStage()
+end
+
+on exitFrame
+  puppetSprite(48, 1)
+  puppetSprite(47, 1)
+end

@@ -1,0 +1,22 @@
+on exitFrame
+  global puzzle
+  set puzzle to 0
+  repeat with n = 25 to 30
+    puppetSprite(n, 1)
+    if (n = 27) or (n = 28) then
+    else
+      if rollOver(n) then
+        set the castNum of sprite n to 72 + n
+      else
+        set the castNum of sprite n to 66 + n
+      end if
+    end if
+  end repeat
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  go(the frame)
+end

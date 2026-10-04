@@ -1,0 +1,13 @@
+on mouseUp
+  global UPG
+  repeat with n = 1 to 50
+    puppetSprite(n, 0)
+  end repeat
+  if UPG = 0 then
+    set the keyDownScript to "checkfor"
+  end if
+  set the keyUpScript to EMPTY
+  puppetSound("click5.wav")
+  updateStage()
+  go("CLOSEOUTGAME")
+end

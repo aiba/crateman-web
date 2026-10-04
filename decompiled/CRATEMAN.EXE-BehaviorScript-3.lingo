@@ -1,0 +1,34 @@
+on exitFrame
+  global UPG, solnum, solutionflag, puzzle
+  if (puzzle <> 51) and (solutionflag = 0) then
+    if getAt(solnum, puzzle) = 0 then
+      setAt(solnum, puzzle, 1)
+      writescores()
+      READSCORES()
+    end if
+  end if
+  puppetSound("thud.wav")
+  updateStage()
+  set n to random(6)
+  if (n = 6) and (UPG = 0) then
+    set n to random(5)
+  end if
+  if n = 1 then
+    go("end1")
+  end if
+  if n = 2 then
+    go("end2")
+  end if
+  if n = 3 then
+    go("end3")
+  end if
+  if n = 4 then
+    go("end4")
+  end if
+  if n = 5 then
+    go("end5")
+  end if
+  if n = 6 then
+    go("end6")
+  end if
+end

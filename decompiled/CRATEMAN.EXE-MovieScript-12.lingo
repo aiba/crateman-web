@@ -1,0 +1,25 @@
+on checkforcrate
+  global mg, crate, gameover
+  if mg <> crate then
+    exit
+  end if
+  if mg = crate then
+    set gameover to 1
+  end if
+  set the keyUpScript to EMPTY
+  set the castNum of sprite 15 to cast "mancrate"
+  set the keyUpScript to EMPTY
+  updateStage()
+  repeat with n = 14 to 15
+    set the trails of sprite n to 1
+    updateStage()
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+  repeat with n = 1 to 3
+    puppetSound("bell.wav")
+    updateStage()
+    count15()
+  end repeat
+end

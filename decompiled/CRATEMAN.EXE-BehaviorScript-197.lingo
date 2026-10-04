@@ -1,0 +1,5 @@
+on exitFrame
+  global speed
+  set speed to 0
+  puppetSound("dooropen.wav")
+end

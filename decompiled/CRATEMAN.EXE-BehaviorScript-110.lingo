@@ -1,0 +1,12 @@
+on exitFrame
+  global UPG
+  if UPG = 0 then
+    set the keyDownScript to "checkfor"
+  end if
+  if UPG = 1 then
+    set the keyDownScript to EMPTY
+  end if
+  puppetSprite(47, 1)
+  puppetSprite(48, 1)
+  puppetSprite(50, 1)
+end

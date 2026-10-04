@@ -1,0 +1,57 @@
+on manfall
+  global gridx, gridy, gridval, mg, carry, crate, gameover, dr
+  set FIRSTFLAG to 0
+  if mg > 216 then
+    exit
+  end if
+  if getAt(gridval, mg + 18) <> 0 then
+    exit
+  end if
+  if crate = mg then
+    exit
+  end if
+  if carry = 1 then
+    set the trails of sprite 20 to 0
+    set the locH of sprite 20 to getAt(gridx, mg - 18)
+    set the locV of sprite 20 to getAt(gridy, mg - 18)
+    updateStage()
+  end if
+  set flag to 0
+  set fl to 0
+  repeat while (fl = 0) and (mg < 217)
+    set FIRSTFLAG to FIRSTFLAG + 1
+    if getAt(gridval, mg + 18) = 0 then
+      set flag to 0
+      repeat with n = 1 to 3
+        set flag to flag + 10
+        set the locV of sprite 15 to getAt(gridy, mg) + flag
+        if carry = 1 then
+          set the locV of sprite 20 to getAt(gridy, mg - 18) + flag
+        end if
+        updateStage()
+        count2()
+      end repeat
+      set mg to mg + 18
+      if crate = mg then
+        exit
+      end if
+    end if
+    if FIRSTFLAG = 1 then
+      checkbridge()
+    end if
+    if crate = mg then
+      exit
+    end if
+    if mg > 216 then
+    else
+      if getAt(gridval, mg + 18) <> 0 then
+        set fl to 1
+      end if
+    end if
+  end repeat
+  if carry = 1 then
+    set the trails of sprite 20 to 1
+    updateStage()
+  end if
+  checkbridge()
+end

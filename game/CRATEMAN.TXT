@@ -1,0 +1,146 @@
+                   CRATE MAN DIRECTIONS
+  
+                          v1.1b
+                    by Soleau Software
+                      Copyright 1997
+
+                     A member of the
+                 Association of Shareware   
+                    Professionals (ASP)
+                     
+                
+                         Requires:
+                    486 66mhz or Pentium
+                      4 Megs Ram Free
+                     Windows 3.1x or 95'
+
+
+
+                         OBJECTIVE 
+
+  The objective of the game is to have Curtis the Crate Man 
+  reach the red crate in each puzzle.
+
+
+                         GAME PLAY
+
+  You select a puzzle by clicking on the Select button at 
+  the bottom of the screen.  A special selection menu will 
+  appear.  Choose the puzzle you want to load onto the game 
+  board by clicking on the puzzle number.  (If this is your 
+  first time playing the game then choose DEMO and a special 
+  demonstration puzzle will lead you through a practice puzzle.)
+
+  You move Crate Man using your arrow keys.  The Left and Right 
+  arrow keys move him left and right.  The Down arrow key allows 
+  him to either pick up or to drop a crate.  The Up arrow key 
+  makes Crate Man jump up to the height of one crate.
+
+
+                         GAME OBJECTS
+
+  Brown Crates:
+  The light brown crates can be picked up and stacked by 
+  Crate Man.  He can only pick up one crate at a time.  
+
+  Wire Rolls:
+  The round wire rolls cannot be picked up, however, they 
+  can be pushed by Crate Man and will roll in the direction 
+  pushed until they either hit another object or the side 
+  of the game board.
+
+  Bridges:
+  On some puzzles you will see bridges.  These bridges will 
+  collapse once Crate Man has walked over them.  However, if 
+  a crate or a wire roll is on top of the bridge then the bridge
+  will not collapse and Crate Man can walk over the object on 
+  the bridge. (Play the DEMO puzzle for an example of this 
+  maneuver)   
+
+  Steel Doors:
+  Many puzzles have two steel doors that Crate Man can enter.  
+  If he enters one door he will come out the other door in
+  the puzzle.   
+
+
+                         SOLVING A PUZZLE
+ 
+  When you successfully solve a puzzle by having Crate Man 
+  reach the red crate, the score board will record the puzzle 
+  as solved by placing a green dot next to the puzzle number.  
+  A red dot next to the puzzle number indicates that the puzzle 
+  is unsolved. (To reset the score board you can erase the 
+  crateman.skr file.)
+
+ 
+                            GAME BUTTONS
+
+  Help:
+  Crate Man Directions
+  Sound Toggle  On/Off
+
+  Select:
+  Brings up Selection screen
+
+  Reset:
+  Resets the puzzle on the game board
+
+  Solution:
+  Shows the solution to the puzzle on the game board
+  Shareware version 1-3 only       Reg. Version 1-50
+
+  Soleau:
+  Information on Soleau Software
+  Crate Man Order Form
+  Descriptions of other Soleau Software Games
+
+  Quit:
+  Exit Crate Man
+
+  
+  Note: Crate Man should not be run with any other programs
+        in the background. Pressing the CTRL, ESC, or ALT key
+        will exit the game.
+
+
+
+                           CONCLUSION
+
+  The unregistered Shareware version of Crate Man has 10 puzzles
+  with solutions to the first three.  The registered version has 
+  50 puzzles, all the solutions and faster loading and exiting.   
+
+  You are encouraged to pass the Shareware version of Crate Man 
+  along to your friends, local BBS or onto the Internet.  Soleau 
+  Software depends upon your registrations to continue producing 
+  non-violent strategy logic game software for the computer market.  
+  Please support our work by registering your copy today!
+
+  The registered version of Crate Man is only $18 (U.S.)  You can 
+  send the order form to your printer from the closing screen   
+  within the game or you can use the Orderfrm.txt file. 
+
+  If paying with a  Credit Card we can upgrade your copy instantly
+  over the phone or from our website at: www.soleau.com  ,so you 
+  won't have to wait for the disk to arrive by mail!
+
+
+                 ORDER TODAY --  IT'S EASY !!!
+
+              We accept MasterCard & Visa & Amex
+                  U.S. and Canadian Checks 
+                    and P.O. Money Orders
+                    
+               Call, Send or Fax your Order Form
+            Voice: 212.721.2361     Fax: 212.873.4994
+
+        You can also Order via our SECURE web site !!!
+                Web site:  http://www.soleau.com
+
+
+                         Soleau Software   
+                        163 Amsterdam Ave
+                            Suite 213
+                       New York  NY   10023
+
+                       soleau@compuserve.com

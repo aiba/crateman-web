@@ -1,0 +1,6 @@
+on exitFrame
+  global puzzle, loadpuzzle
+  set puzzle to 0
+  set loadpuzzle to 0
+  go("beg")
+end

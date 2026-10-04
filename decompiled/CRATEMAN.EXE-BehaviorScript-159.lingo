@@ -1,0 +1,4 @@
+on exitFrame
+  puppetSprite(46, 1)
+  set the castNum of sprite 46 to 151
+end

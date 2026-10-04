@@ -1,0 +1,8 @@
+on exitFrame
+  global userName
+  cursor(-1)
+  set userName to EMPTY
+  set the mouseDownScript to EMPTY
+  set the keyDownScript to "GETUSERNAME"
+  set the text of cast "CODENAME" to EMPTY
+end

@@ -1,0 +1,7 @@
+on mouseUp
+  puppetSprite(49, 0)
+  puppetSprite(50, 0)
+  puppetSound("click5.wav")
+  updateStage()
+  go("CLOSEOUTGAME")
+end

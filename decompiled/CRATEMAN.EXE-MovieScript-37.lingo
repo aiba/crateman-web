@@ -1,0 +1,39 @@
+on checkbridge
+  global bridgeflag, mg, gridval, gridx, gridy, elen
+  if elen = 1 then
+    set elen to 0
+    exit
+  end if
+  if mg > 216 then
+    exit
+  end if
+  if bridgeflag <> 0 then
+    if getAt(gridval, mg + 18) = 10 then
+      if (mg + 18) = bridgeflag then
+        exit
+      end if
+    end if
+    set the trails of sprite 21 to 0
+    updateStage()
+    set the locH of sprite 21 to getAt(gridx, bridgeflag)
+    set the locV of sprite 21 to getAt(gridy, bridgeflag)
+    updateStage()
+    set the castNum of sprite 21 to cast "bridge1"
+    updateStage()
+    count7()
+    set the castNum of sprite 21 to cast "bridge2"
+    count7()
+    updateStage()
+    set the locH of sprite 21 to -2000
+    set the locV of sprite 21 to -2000
+    updateStage()
+    set the castNum of sprite 21 to cast "bridge"
+    setAt(gridval, bridgeflag, 0)
+    set bridgeflag to 0
+    exit
+  end if
+  set the trails of sprite 21 to 1
+  if getAt(gridval, mg + 18) = 10 then
+    set bridgeflag to mg + 18
+  end if
+end

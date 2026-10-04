@@ -1,0 +1,6 @@
+on exitFrame
+  global UPG
+  if UPG = 1 then
+    go("SK2")
+  end if
+end

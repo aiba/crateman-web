@@ -1,0 +1,126 @@
+on GETDIR
+  global gridnum, gridval, gridx, gridy, mg, dr, carry, odr, crate, solutionflag, KY, movescount, solutioncnt, solution
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  set KY to "x"
+  checkbridge()
+  set KY to the key
+  set KY to charToNum(the key)
+  if solutionflag = 1 then
+    set solutioncnt to solutioncnt + 1
+    set k to "x"
+    set k to char solutioncnt of solution
+    if k = "U" then
+      set KY to 30
+    end if
+    if k = "R" then
+      set KY to 29
+    end if
+    if k = "D" then
+      set KY to 31
+    end if
+    if k = "L" then
+      set KY to 28
+    end if
+    if k = "S" then
+      set KY to 100
+    end if
+  end if
+  if (KY = 30) or (KY = 56) then
+    if mg < 19 then
+      exit
+    end if
+    jump()
+    set movescount to movescount + 1
+  end if
+  if (KY = 29) or (KY = 54) then
+    set movescount to movescount + 1
+    set the castNum of sprite 15 to cast "MR1"
+    updateStage()
+    set dr to 2
+    if getAt(gridx, mg) = getAt(gridx, 18) then
+      exit
+    end if
+    MOVEMAN()
+  end if
+  if (KY = 31) or (KY = 50) then
+    if (dr = 2) and (getAt(gridx, mg) = getAt(gridx, 18)) then
+      exit
+    end if
+    if (dr = 4) and (getAt(gridx, mg) = getAt(gridx, 1)) then
+      exit
+    end if
+    if mg < 19 then
+      exit
+    end if
+    set movescount to movescount + 1
+    if carry = 0 then
+      if (dr = 2) and (mg = 234) then
+        exit
+      end if
+      if (dr = 4) and (mg = 1) then
+        exit
+      end if
+      if dr = 2 then
+        if getAt(gridval, mg + 1) <> 2 then
+          exit
+        end if
+      end if
+      if dr = 4 then
+        if getAt(gridval, mg - 1) <> 2 then
+          exit
+        end if
+      end if
+      if getAt(gridval, mg - 18) <> 0 then
+        exit
+      end if
+      if dr = 2 then
+        if getAt(gridval, mg - 17) <> 0 then
+          exit
+        end if
+      end if
+      if dr = 4 then
+        if getAt(gridval, mg - 19) <> 0 then
+          exit
+        end if
+      end if
+      if dr = 2 then
+        set the castNum of sprite 15 to cast "liftr"
+      end if
+      if dr = 4 then
+        set the castNum of sprite 15 to cast "liftl"
+      end if
+      updateStage()
+      count7()
+      LIFTCRATE()
+      exit
+    end if
+    if carry = 1 then
+      if dr = 2 then
+        if getAt(gridval, mg - 17) <> 0 then
+          exit
+        end if
+      end if
+      if dr = 4 then
+        if getAt(gridval, mg - 19) <> 0 then
+          exit
+        end if
+      end if
+      placecrate()
+    end if
+  end if
+  if (KY = 28) or (KY = 52) then
+    set the castNum of sprite 15 to cast "ML1"
+    updateStage()
+    set dr to 4
+    if getAt(gridx, mg) = getAt(gridx, 1) then
+      exit
+    end if
+    set movescount to movescount + 1
+    MOVEMAN()
+  end if
+end

@@ -1,0 +1,3 @@
+on exitFrame
+  puppetSound("thud.wav")
+end

@@ -1,0 +1,14 @@
+on exitFrame
+  if rollOver(47) then
+    set the castNum of sprite 47 to cast "Continue2"
+  else
+    set the castNum of sprite 47 to cast "Continue1"
+  end if
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "Qdemo2"
+  else
+    set the castNum of sprite 48 to cast "Qdemo1"
+  end if
+  updateStage()
+  go(the frame)
+end

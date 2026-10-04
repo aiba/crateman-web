@@ -1,0 +1,147 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Crate Man</title>
+<style>
+  body { background: #111; color: #ddd; font: 14px system-ui; text-align: center; margin: 12px; }
+  canvas { width: 960px; height: 720px; image-rendering: pixelated; display: block; margin: 8px auto; }
+  select, button { font: inherit; margin: 0 4px; }
+  #status { min-height: 1.4em; }
+</style>
+<div>
+  <select id="pick"></select>
+  <button id="undo">Undo (Z)</button>
+  <button id="reset">Reset (Esc)</button>
+  <button id="sol">Play solution</button>
+  <button id="fast">Speed: normal</button>
+  <label><input type="checkbox" id="snd" checked> sound</label>
+</div>
+<canvas id="c" width="640" height="480"></canvas>
+<div id="status"></div>
+<div>← → turn / walk / push ball &nbsp;·&nbsp; ↑ jump &nbsp;·&nbsp; ↓ lift / place crate &nbsp;·&nbsp; Z undo</div>
+<script src="engine.js"></script>
+<script src="data.js"></script>
+<script src="assets/cast.js"></script>
+<script>
+const { Game, N, gx, gy, SCAFFOLD, CRATE, DOOR, BALL, BRIDGE } = CrateMan;
+const { puzzles, solutions } = CRATEMAN_DATA;
+const ctx = document.getElementById('c').getContext('2d');
+const $ = (id) => document.getElementById(id);
+
+// --- assets ---
+const img = {};
+for (const [k, e] of Object.entries(CRATEMAN_CAST)) { img[k] = Object.assign(new Image(), { src: 'assets/' + e.file }); }
+const snd = {};
+for (const s of ['steps', 'thud', 'lift', 'bell', 'thud1', 'ballroll', 'doorsnd']) snd[s] = new Audio(`assets/snd/${s}.wav`);
+function draw(cast, x, y) { const e = CRATEMAN_CAST[cast]; ctx.drawImage(img[cast], x + e.ox, y + e.oy); }
+
+// --- state ---
+let game, puzzle = +(localStorage.cmPuzzle || 1), queue = [], playing = null, fast = false, timer = null, pendingKey = null, history = [];
+const solved = new Set(JSON.parse(localStorage.cmSolved || '[]'));
+
+function snapshot(g, ticks, sounds) {
+  return { g: g.g.slice(), crate: g.crate, doors: g.doors, man: g.man && { ...g.man }, cast: g.cast, carry: g.carry,
+           s20: g.s20, s21: g.s21, s22: g.s22, doorAnim: g.doorAnim, hide: g.hide, over: g.gameover, ticks, sounds };
+}
+function render(s) {
+  draw('8', 320, 240); // 640x480 backdrop (its registration point is the stage centre)
+  const STATIC = { [SCAFFOLD]: 'scafold', [CRATE]: 'crate', [DOOR]: 'doorway', [BALL]: 'roll', [BRIDGE]: 'bridge' };
+  for (let i = 1; i <= N; i++) {
+    let cast = STATIC[s.g[i]];
+    if (!cast || i === s.hide) continue;
+    if (s.doorAnim && i === s.doors[s.doorAnim.door]) cast = String(s.doorAnim.cast);
+    draw(cast, gx(i), gy(i));
+  }
+  if (!s.over) draw('redcrate', gx(s.crate), gy(s.crate));
+  if (s.s21) draw(s.s21.cast, s.s21.x, s.s21.y);
+  if (s.s22) draw(s.s22.cast, s.s22.x, s.s22.y);
+  if (s.s20) draw('crate', s.s20.x, s.s20.y);
+  else if (s.carry && s.man) draw('crate', s.man.x, s.man.y - 30);
+  if (s.man) draw(s.cast, s.man.x, s.man.y);
+}
+
+function load(n) {
+  puzzle = n; localStorage.cmPuzzle = n;
+  clearTimeout(timer); timer = null; queue = []; playing = null; pendingKey = null;
+  history = [];
+  attach(new Game(puzzles[n - 1]));
+  $('pick').value = n; $('sol').textContent = 'Play solution';
+  status();
+  render(snapshot(game, 0, []));
+}
+function attach(g) {
+  game = g;
+  let sounds = [];
+  game.onSound = (name) => sounds.push(name);
+  game.onFrame = (ticks) => { queue.push(snapshot(game, ticks, sounds)); sounds = []; };
+}
+// One undo step = one keypress that changed something; history goes back to the puzzle start.
+function undo() {
+  if (playing || !history.length) return;
+  clearTimeout(timer); timer = null; queue = []; pendingKey = null;
+  attach(history.pop());
+  status();
+  render(snapshot(game, 0, []));
+}
+function status(extra) {
+  $('status').textContent = `${puzzle === 51 ? 'Tutorial' : 'Puzzle ' + puzzle} · moves ${game.moves} · undo steps ${history.length}` + (extra ? ' · ' + extra : '');
+}
+
+function press(k) {
+  if (game.gameover) return;
+  const before = game.clone();
+  game.step(k);
+  if (!playing && game.key() !== before.key()) history.push(before);
+  queue.push(snapshot(game, 0, []));
+  if (!timer) pump();
+}
+// Play queued animation frames; each frame holds for the original's countN delay (1 tick = 1/60 s).
+function pump() {
+  timer = null;
+  const s = queue.shift();
+  if (s) {
+    render(s);
+    if ($('snd').checked) for (const name of s.sounds) { const a = snd[name]; a.currentTime = 0; a.play().catch(() => {}); }
+    status();
+    timer = setTimeout(pump, fast ? 0 : Math.max(s.ticks, 1) * 1000 / 60);
+    return;
+  }
+  if (game.gameover) {
+    if (!playing && puzzle <= 50) { solved.add(puzzle); localStorage.cmSolved = JSON.stringify([...solved]); fillPicker(); }
+    status(playing ? 'solution finished' : 'SOLVED');
+    playing = null; $('sol').textContent = 'Play solution';
+    return;
+  }
+  if (playing) {
+    const k = playing.shift();
+    if (k) press(k); else { playing = null; $('sol').textContent = 'Play solution'; }
+  } else if (pendingKey) { const k = pendingKey; pendingKey = null; press(k); }
+}
+
+function fillPicker() {
+  $('pick').innerHTML = puzzles.map((_, i) =>
+    `<option value="${i + 1}">${i === 50 ? 'Tutorial' : 'Puzzle ' + (i + 1)}${solved.has(i + 1) ? ' ✓' : ''}</option>`).join('');
+  $('pick').value = puzzle;
+}
+const KEYS = { ArrowUp: 'U', ArrowDown: 'D', ArrowLeft: 'L', ArrowRight: 'R', 8: 'U', 2: 'D', 4: 'L', 6: 'R' };
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') return load(puzzle);
+  if (e.key === 'z' || e.key === 'Z' || e.key === 'Backspace') { e.preventDefault(); return undo(); }
+  const k = KEYS[e.key];
+  if (!k || playing) return;
+  e.preventDefault();
+  if (timer) pendingKey = k; else press(k);
+});
+$('pick').onchange = (e) => { load(+e.target.value); e.target.blur(); };
+$('reset').onclick = () => load(puzzle);
+$('undo').onclick = (e) => { undo(); e.target.blur(); };
+$('fast').onclick = () => { fast = !fast; $('fast').textContent = 'Speed: ' + (fast ? 'fast' : 'normal'); };
+$('sol').onclick = () => {
+  if (playing) return load(puzzle);
+  load(puzzle);
+  playing = [...solutions[puzzle - 1]];
+  $('sol').textContent = 'Stop solution';
+  pump();
+};
+fillPicker();
+Promise.all(Object.values(img).map((i) => i.decode().catch(() => {}))).then(() => load(puzzle));
+</script>

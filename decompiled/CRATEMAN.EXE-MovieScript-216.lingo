@@ -1,0 +1,28 @@
+on WRITEUPG
+  global userName, CODENUMBER, SCRAMBLENAME, UPG, REGFILE, ALLCODES
+  set ALLCODES to EMPTY
+  if objectp(MYFILE) then
+    set MYFILE to 0
+  end if
+  set MYFILE to new(xtra("FILEIO"))
+  openFile(MYFILE, the moviePath & "Crateman.dat", 0)
+  delete(MYFILE)
+  closeFile(MYFILE)
+  set MYFILE to 0
+  if objectp(MYFILE) then
+    set MYFILE to 0
+  end if
+  repeat with n = 1 to 3
+    set ALLCODES to userName & ","
+    set ALLCODES to ALLCODES & CODENUMBER & ","
+    set ALLCODES to ALLCODES & SCRAMBLENAME & ","
+    set ALLCODES to ALLCODES & "d325CrateMan922sL34" & ","
+  end repeat
+  set thefile to ALLCODES
+  set MYFILE to new(xtra("FILEIO"))
+  createFile(MYFILE, the moviePath & "Crateman.dat")
+  openFile(MYFILE, the moviePath & "Crateman.dat", 0)
+  writeString(MYFILE, thefile)
+  closeFile(MYFILE)
+  set MYFILE to 0
+end

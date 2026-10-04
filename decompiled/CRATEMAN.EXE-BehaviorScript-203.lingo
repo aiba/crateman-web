@@ -1,0 +1,4 @@
+on exitFrame
+  restorepuzzle()
+  play done
+end

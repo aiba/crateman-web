@@ -1,0 +1,6 @@
+on exitFrame
+  global demotext, DEMOCNT
+  set DEMOCNT to DEMOCNT + 1
+  set the castNum of sprite 46 to DEMOCNT
+  puppetSound("select.wav")
+end

@@ -1,0 +1,80 @@
+on rollright
+  global gridx, gridy, gridval, gridnum, mg, crate
+  set rollg to mg + 1
+  set flag to 0
+  set ff to 0
+  repeat while flag = 0
+    if getAt(gridx, rollg) = getAt(gridx, 18) then
+    else
+      if getAt(gridval, rollg + 1) <> 0 then
+      else
+        if (rollg + 1) = crate then
+        else
+          set the trails of sprite 22 to 0
+          set the locH of sprite 22 to getAt(gridx, rollg)
+          set the locV of sprite 22 to getAt(gridy, rollg)
+          updateStage()
+          if getAt(gridval, rollg + 1) = 0 then
+            set ff to 0
+            repeat with n = 1 to 2
+              puppetSound("BALLROLL")
+              set ff to ff + 15
+              if n = 1 then
+                set the castNum of sprite 22 to 42
+              end if
+              if n = 2 then
+                set the castNum of sprite 22 to 41
+              end if
+              set the locH of sprite 22 to getAt(gridx, rollg) + ff
+              set the locV of sprite 22 to getAt(gridy, rollg)
+              updateStage()
+              count4()
+            end repeat
+            setAt(gridval, rollg, 0)
+            set rollg to rollg + 1
+            setAt(gridval, rollg, 7)
+          end if
+          set flagroll to 0
+          repeat while flagroll = 0
+            if rollg < 217 then
+              if getAt(gridval, rollg + 18) = 0 then
+                set ff to 0
+                repeat with n = 1 to 2
+                  set ff to ff + 15
+                  if n = 1 then
+                    set the castNum of sprite 22 to 42
+                  end if
+                  if n = 2 then
+                    set the castNum of sprite 22 to 41
+                  end if
+                  set the locH of sprite 22 to getAt(gridx, rollg)
+                  set the locV of sprite 22 to getAt(gridy, rollg) + ff
+                  updateStage()
+                  count2()
+                end repeat
+                setAt(gridval, rollg, 0)
+                set rollg to rollg + 18
+                setAt(gridval, rollg, 7)
+              end if
+            end if
+            if rollg > 216 then
+              set flagroll to 1
+            end if
+            if flagroll = 0 then
+              if getAt(gridval, rollg + 18) <> 0 then
+                set flagroll to 1
+              end if
+            end if
+          end repeat
+        end if
+      end if
+    end if
+  end repeat
+  puppetSound("THUD1")
+  set the trails of sprite 22 to 1
+  updateStage()
+  set the castNum of sprite 22 to 41
+  set the locH of sprite 22 to -2000
+  set the locV of sprite 22 to -2000
+  updateStage()
+end

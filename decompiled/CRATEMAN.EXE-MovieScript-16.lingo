@@ -1,0 +1,51 @@
+on cratefall
+  global gridx, gridy, gridval, carry, cf, crate
+  set fl to 0
+  set flag to 0
+  setAt(gridval, cf, 2)
+  if cf > 216 then
+    exit
+  end if
+  if (cf + 18) = crate then
+    setAt(gridval, cf, 2)
+    exit
+  end if
+  if getAt(gridval, cf + 18) <> 0 then
+    exit
+  end if
+  checkbridge()
+  set the trails of sprite 20 to 0
+  set the locH of sprite 20 to getAt(gridx, cf)
+  set the locV of sprite 20 to getAt(gridy, cf)
+  updateStage()
+  repeat while (fl = 0) and (cf < 217)
+    if getAt(gridval, cf + 18) = 0 then
+      set flag to 0
+      repeat with n = 1 to 3
+        set flag to flag + 10
+        set the locV of sprite 20 to getAt(gridy, cf) + flag
+        updateStage()
+        count2()
+      end repeat
+      setAt(gridval, cf, 0)
+      set cf to cf + 18
+      setAt(gridval, cf, 2)
+      if (cf + 18) = crate then
+      else
+        if cf > 216 then
+        else
+          if getAt(gridval, cf + 18) <> 0 then
+            set fl to 1
+          end if
+        end if
+      end if
+      puppetSound("thud.wav")
+      set the trails of sprite 20 to 1
+      updateStage()
+      set the locH of sprite 20 to -2000
+      set the locV of sprite 20 to -2000
+      updateStage()
+      set carry to 0
+    end if
+  end repeat
+end

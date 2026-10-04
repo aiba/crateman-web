@@ -1,0 +1,8 @@
+on mouseUp
+  puppetSprite(47, 0)
+  puppetSprite(48, 0)
+  puppetSprite(50, 0)
+  puppetSound("click5.wav")
+  updateStage()
+  go("finalscreen")
+end

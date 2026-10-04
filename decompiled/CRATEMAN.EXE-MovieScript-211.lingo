@@ -1,0 +1,33 @@
+on CHECKUPG
+  global UPG, userName, SCRAMBLENAME, CODENUMBER, REGFILE, GREADOBJECT, REGNAME, TMPUSERNAME
+  set TMPUSERNAME to EMPTY
+  set ALLCODES to EMPTY
+  set userName to EMPTY
+  set SCRAMBLENAME to EMPTY
+  set CODENUMBER to EMPTY
+  set UPG to 0
+  if objectp(MYFILE) then
+    set MYFILE to 0
+  end if
+  set MYFILE to new(xtra("FILEIO"))
+  openFile(MYFILE, "Crateman.dat", 1)
+  set ALLCODES to readFile(MYFILE)
+  closeFile(MYFILE)
+  set MYFILE to 0
+  set userName to item 1 of ALLCODES
+  set CODENUMBER to item 2 of ALLCODES
+  set SCRAMBLENAME to item 3 of ALLCODES
+  if CODENUMBER = "olrt`nss" then
+    repeat with n = 1 to length(userName)
+      set ZW to char n of userName
+      set ZWW to charToNum(ZW) + 55 + n
+      set TMPUSERNAME to TMPUSERNAME & numToChar(ZWW)
+    end repeat
+    if TMPUSERNAME = SCRAMBLENAME then
+      set UPG to 1
+    end if
+    if UPG = 1 then
+      set REGNAME to userName
+    end if
+  end if
+end

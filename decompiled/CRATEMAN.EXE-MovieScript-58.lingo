@@ -1,0 +1,265 @@
+on walkright
+  global gridx, gridy, gridval, gridnum, mg, dr, cf, odr, carry, crate, doorflag
+  set cf to 0
+  if (carry <> 0) and (getAt(gridval, mg + 1) = 7) then
+    exit
+  end if
+  if (carry <> 1) and (getAt(gridval, mg + 1) = 7) then
+    if getAt(gridx, mg + 1) >= getAt(gridx, 18) then
+      exit
+    end if
+    if getAt(gridval, mg + 2) <> 0 then
+      exit
+    end if
+    if mg > 18 then
+      if (getAt(gridval, mg - 17) = 2) or (getAt(gridval, mg - 17) = 7) then
+        exit
+      end if
+    end if
+    set the castNum of sprite 15 to cast "liftr"
+    updateStage()
+    count15()
+    set the castNum of sprite 15 to cast "mr1"
+    updateStage()
+    rollright()
+    exit
+  end if
+  if carry = 1 then
+    set the trails of sprite 20 to 0
+    set the locH of sprite 20 to getAt(gridx, mg - 18)
+    set the locV of sprite 20 to getAt(gridy, mg - 18)
+    updateStage()
+  end if
+  if carry = 1 then
+    if (getAt(gridval, mg - 17) <> 0) or ((mg - 17) = crate) then
+      set carry to 0
+      set cf to mg - 18
+    end if
+  end if
+  set flag to 0
+  puppetSound("steps.wav")
+  repeat with n = 1 to 4
+    set flag to flag + 7
+    if n = 4 then
+      set flag to flag + 2
+    end if
+    if (n = 2) or (n = 4) then
+      set the castNum of sprite 15 to cast "mr1"
+    end if
+    if n = 1 then
+      set the castNum of sprite 15 to cast "mr2"
+    end if
+    if n = 3 then
+      set the castNum of sprite 15 to cast "mr3"
+    end if
+    set the locH of sprite 15 to getAt(gridx, mg) + flag
+    set the locV of sprite 15 to getAt(gridy, mg)
+    if (mg > 18) and (carry = 1) then
+      set the locH of sprite 20 to getAt(gridx, mg - 18) + flag
+      set the locV of sprite 20 to getAt(gridy, mg - 18)
+    end if
+    count4()
+    updateStage()
+  end repeat
+  set mg to mg + 1
+  if cf <> 0 then
+    cratefall()
+  end if
+  set the trails of sprite 20 to 1
+  updateStage()
+end
+
+on walkleft
+  global gridx, gridy, gridval, gridnum, mg, dr, carry, cf, crate
+  set flag to 0
+  set cf to 0
+  if (carry <> 0) and (getAt(gridval, mg - 1) = 7) then
+    exit
+  end if
+  if (carry <> 1) and (getAt(gridval, mg - 1) = 7) then
+    if getAt(gridx, mg - 1) = getAt(gridx, 1) then
+      exit
+    end if
+    if getAt(gridval, mg - 2) <> 0 then
+      exit
+    end if
+    if mg > 19 then
+      if (getAt(gridval, mg - 19) = 2) or (getAt(gridval, mg - 19) = 7) then
+        exit
+      end if
+    end if
+    set the castNum of sprite 15 to cast "liftl"
+    updateStage()
+    count15()
+    set the castNum of sprite 15 to cast "ml1"
+    updateStage()
+    rollleft()
+    exit
+  end if
+  if carry = 1 then
+    set the trails of sprite 20 to 0
+    set the locH of sprite 20 to getAt(gridx, mg - 18)
+    set the locV of sprite 20 to getAt(gridy, mg - 18)
+    updateStage()
+  end if
+  if carry = 1 then
+    if (getAt(gridval, mg - 19) <> 0) or ((mg - 19) = crate) then
+      set carry to 0
+      set cf to mg - 18
+    end if
+  end if
+  puppetSound("steps.wav")
+  repeat with n = 1 to 4
+    set flag to flag + 7
+    if n = 4 then
+      set flag to flag + 2
+    end if
+    if (n = 2) or (n = 4) then
+      set the castNum of sprite 15 to cast "ml1"
+    end if
+    if n = 1 then
+      set the castNum of sprite 15 to cast "ml2"
+    end if
+    if n = 3 then
+      set the castNum of sprite 15 to cast "ml3"
+    end if
+    set the locH of sprite 15 to getAt(gridx, mg) - flag
+    set the locV of sprite 15 to getAt(gridy, mg)
+    if (mg > 18) and (carry = 1) then
+      set the locH of sprite 20 to getAt(gridx, mg - 18) - flag
+      set the locV of sprite 20 to getAt(gridy, mg - 18)
+    end if
+    count4()
+    updateStage()
+  end repeat
+  set mg to mg - 1
+  if cf <> 0 then
+    cratefall()
+  end if
+  set the trails of sprite 20 to 1
+  updateStage()
+end
+
+on jump
+  global gridx, gridy, gridval, gridnum, mg, dr, carry, crate, elen
+  set elen to 0
+  if (dr = 2) and (getAt(gridx, mg) = getAt(gridx, 18)) then
+    exit
+  end if
+  if (dr = 4) and (getAt(gridy, mg) = getAt(gridx, 1)) then
+    exit
+  end if
+  if getAt(gridval, mg - 18) <> 0 then
+    exit
+  end if
+  if (carry = 1) and (mg < 37) then
+    exit
+  end if
+  if carry = 1 then
+    if getAt(gridval, mg - 36) <> 0 then
+      exit
+    end if
+  end if
+  if (carry = 1) and ((mg - 36) = crate) then
+    exit
+  end if
+  if dr = 2 then
+    set the castNum of sprite 15 to cast "jr1"
+    updateStage()
+    count15()
+    set the castNum of sprite 15 to cast "mr1"
+    updateStage()
+    count2()
+  end if
+  if dr = 4 then
+    set the castNum of sprite 15 to cast "jl1"
+    updateStage()
+    count15()
+    set the castNum of sprite 15 to cast "ml1"
+    updateStage()
+    count2()
+  end if
+  if carry = 1 then
+    set the trails of sprite 20 to 0
+    set the locH of sprite 20 to getAt(gridx, mg - 18)
+    set the locV of sprite 20 to getAt(gridy, mg - 18)
+    updateStage()
+  end if
+  set flag to 0
+  repeat with n = 1 to 3
+    set flag to flag + 10
+    if carry = 1 then
+      set the locV of sprite 20 to getAt(gridy, mg - 18) - flag
+    end if
+    set the locV of sprite 15 to getAt(gridy, mg) - flag
+    updateStage()
+    count2()
+  end repeat
+  set mg to mg - 18
+  if (carry = 1) and (dr = 2) then
+    set elen to 1
+    if getAt(gridval, mg - 17) <> 0 then
+      exit
+    end if
+  end if
+  if (carry = 1) and (dr = 4) then
+    set elen to 1
+    if getAt(gridval, mg - 19) <> 0 then
+      exit
+    end if
+  end if
+  if (carry = 1) and (dr = 2) and ((mg - 17) = crate) then
+    exit
+  end if
+  if (carry = 1) and (dr = 4) and ((mg - 19) = crate) then
+    exit
+  end if
+  if mg = crate then
+    exit
+  end if
+  if (dr = 4) and (getAt(gridx, 1) = getAt(gridx, mg)) then
+    exit
+  end if
+  if (dr = 2) and (getAt(gridx, 18) = getAt(gridx, mg)) then
+    exit
+  end if
+  if dr = 2 then
+    if (getAt(gridval, mg + 1) = 0) or (getAt(gridval, mg + 1) = 6) then
+      set flag to 0
+      repeat with n = 1 to 3
+        set flag to flag + 10
+        if carry = 1 then
+          set the locH of sprite 20 to getAt(gridx, mg - 18) + flag
+        end if
+        set the locH of sprite 15 to getAt(gridx, mg) + flag
+        updateStage()
+        count7()
+      end repeat
+      set mg to mg + 1
+    end if
+  end if
+  if dr = 4 then
+    if (getAt(gridval, mg - 1) = 0) or (getAt(gridval, mg - 1) = 6) then
+      set flag to 0
+      repeat with n = 1 to 3
+        set flag to flag + 10
+        if carry = 1 then
+          set the locH of sprite 20 to getAt(gridx, mg - 18) - flag
+        end if
+        set the locH of sprite 15 to getAt(gridx, mg) - flag
+        updateStage()
+        count7()
+      end repeat
+      set mg to mg - 1
+    end if
+  end if
+  if carry = 1 then
+    set the trails of sprite 20 to 1
+    updateStage()
+    set the locH of sprite 20 to -2000
+    set the locV of sprite 20 to -2000
+    updateStage()
+  end if
+  manfall()
+  checkbridge()
+end

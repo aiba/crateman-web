@@ -1,0 +1,7 @@
+on exitFrame
+  repeat with n = 1 to 50
+    puppetSprite(n, 0)
+  end repeat
+  set the keydupscript to EMPTY
+  go("finalscreen")
+end

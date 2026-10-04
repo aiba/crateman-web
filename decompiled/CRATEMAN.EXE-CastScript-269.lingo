@@ -1,0 +1,8 @@
+on mouseUp
+  global SOND
+  set SOND to 0
+  set the castNum of sprite 47 to cast "sndbut1"
+  set the soundEnabled to 1
+  puppetSound("click5.wav")
+  updateStage()
+end

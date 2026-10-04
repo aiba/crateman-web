@@ -1,0 +1,166 @@
+on startMovie
+  global gridx, gridy, gridval, gridnum, dotx, doty, solnum, UPG, REGNAME, SCRTHERE, REGTHERE, ALPH
+  clearGlobals()
+  set the soundEnabled to 1
+  set the exitLock to 0
+  set dotx to []
+  set doty to []
+  set solnum to []
+  set hflag to 106 - 84
+  repeat with Z = 1 to 5
+    set nn to 0
+    set hflag to hflag + 84
+    set x to hflag
+    repeat with n = 1 to 10
+      set nn to nn + 20
+      set y to 146 + nn
+      append(dotx, x)
+      append(doty, y)
+    end repeat
+  end repeat
+  set nn to 0
+  set hflag to 0
+  set x to 0
+  set y to 0
+  set gridval to []
+  set gridnum to []
+  set gridx to []
+  set gridy to []
+  set x to 20
+  set y to 7
+  set g to 0
+  repeat with n = 1 to 13
+    set y to y + 30
+    set x to 20
+    repeat with nn = 1 to 18
+      set x to x + 30
+      set g to g + 1
+      append(gridx, x)
+      append(gridy, y)
+      append(gridnum, g)
+      append(gridval, 0)
+    end repeat
+  end repeat
+  set REGTHERE to 0
+  set SCRTHERE to 0
+  set SAVETHERE to 0
+  set ALPH to "ABCDEFGHIJKLMNOPQURSTUVWXYZabcdefghijklmnopqurstuvwxyz" & RETURN
+  set the soundEnabled to 1
+  set FILELIST to []
+  repeat with i = 1 to the maxinteger
+    set n to getNthFileNameInFolder(the pathName, i)
+    if n = EMPTY then
+    else
+      append(FILELIST, n)
+    end if
+  end repeat
+  repeat with n = 1 to count(FILELIST)
+    if "Crateman.skr" = getAt(FILELIST, n) then
+      set SCRTHERE to 1
+    end if
+    if "Crateman.dat" = getAt(FILELIST, n) then
+      set REGTHERE to 1
+    end if
+  end repeat
+  if REGTHERE = 0 then
+    if objectp(MYFILE) then
+      set MYFILE to 0
+    end if
+    repeat with n = 1 to 5
+      set thefile to thefile & "CRATEDATA98$7898N*E593$##48ZY" & RETURN
+    end repeat
+    set MYFILE to new(xtra("FILEIO"))
+    createFile(MYFILE, the moviePath & "Crateman.dat")
+    openFile(MYFILE, the moviePath & "Crateman.dat", 0)
+    writeString(MYFILE, thefile)
+    closeFile(MYFILE)
+    set MYFILE to 0
+  end if
+  if SCRTHERE = 0 then
+    WRITENEWSCORES()
+  end if
+  READSCORES()
+  CHECKUPG()
+  if UPG = 0 then
+    set the text of field "TITLETEXT" to "Shareware" & RETURN & "Unregistered"
+  end if
+  if UPG = 1 then
+    set the text of field "TITLETEXT" to "Registered to" & RETURN & REGNAME
+  end if
+end
+
+on count2
+  global solutionflag, speed
+  if speed = 1 then
+    exit
+  end if
+  set TTIME to the timer
+  repeat while the timer < (TTIME + 2)
+  end repeat
+end
+
+on count4
+  global speed
+  if speed = 1 then
+    exit
+  end if
+  set TTIME to the timer
+  repeat while the timer < (TTIME + 4)
+  end repeat
+end
+
+on count7
+  global speed
+  if speed = 1 then
+    exit
+  end if
+  set TTIME to the timer
+  repeat while the timer < (TTIME + 7)
+  end repeat
+end
+
+on count15
+  global speed
+  if speed = 1 then
+    exit
+  end if
+  set TTIME to the timer
+  repeat while the timer < (TTIME + 15)
+  end repeat
+end
+
+on count30
+  global speed
+  if speed = 1 then
+    exit
+  end if
+  set TTIME to the timer
+  repeat while the timer < (TTIME + 30)
+  end repeat
+end
+
+on CIPHER
+  global CODEWORD
+  set TEMPCODEWORD to EMPTY
+  repeat with n = 1 to length(CODEWORD)
+    set CH to char n of CODEWORD
+    set CHN to charToNum(CH)
+    set CHN to CHN + 94
+    set CH to numToChar(CHN)
+    set TEMPCODEWORD to TEMPCODEWORD & CH
+  end repeat
+  set CODEWORD to TEMPCODEWORD
+end
+
+on UNCIPHER
+  global CODEWORD
+  set TEMPCODEWORD to EMPTY
+  repeat with n = 1 to length(CODEWORD)
+    set CH to char n of CODEWORD
+    set CHN to charToNum(CH)
+    set CHN to CHN - 94
+    set CH to numToChar(CHN)
+    set TEMPCODEWORD to TEMPCODEWORD & CH
+  end repeat
+  set CODEWORD to TEMPCODEWORD
+end

@@ -1,0 +1,5 @@
+on exitFrame
+  puppetSprite(47, 1)
+  puppetSprite(48, 1)
+  puppetSprite(46, 1)
+end

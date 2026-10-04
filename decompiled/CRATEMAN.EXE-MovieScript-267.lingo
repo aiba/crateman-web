@@ -1,0 +1,3 @@
+on stopMovie
+  set the soundEnabled to 1
+end

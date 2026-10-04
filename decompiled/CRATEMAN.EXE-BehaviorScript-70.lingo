@@ -1,0 +1,15 @@
+on exitFrame
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "RETURN2"
+  else
+    set the castNum of sprite 48 to cast "RETURN1"
+  end if
+  updateStage()
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  go(the frame)
+end

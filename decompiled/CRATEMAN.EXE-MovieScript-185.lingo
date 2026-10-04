@@ -1,0 +1,23 @@
+on READSCORES
+  global solnum, CODEWORD
+  set solnum to []
+  set thefile to EMPTY
+  set SCORETEXT to EMPTY
+  if objectp(MYFILE) then
+    set MYFILE to 0
+  end if
+  set MYFILE to new(xtra("FILEIO"))
+  openFile(MYFILE, "Crateman.skr", 1)
+  set thefile to readFile(MYFILE)
+  closeFile(MYFILE)
+  set MYFILE to 0
+  set SCORETEXT to thefile
+  set CODEWORD to SCORETEXT
+  UNCIPHER()
+  set SCORETEXT to CODEWORD
+  repeat with n = 1 to 50
+    set SCORET to EMPTY
+    set SCORET to item n of SCORETEXT
+    append(solnum, SCORET)
+  end repeat
+end

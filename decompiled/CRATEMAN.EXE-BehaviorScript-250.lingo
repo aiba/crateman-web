@@ -1,0 +1,21 @@
+on exitFrame
+  puppetSprite(47, 1)
+  puppetSprite(48, 1)
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "RETURN3"
+  else
+    set the castNum of sprite 48 to cast "RETURN1"
+  end if
+  if rollOver(47) then
+    set the castNum of sprite 47 to cast "VO2"
+  else
+    set the castNum of sprite 47 to cast "VO1"
+  end if
+  if rollOver(46) then
+    set the castNum of sprite 46 to cast "GD2"
+  else
+    set the castNum of sprite 46 to cast "GD1"
+  end if
+  updateStage()
+  go(the frame)
+end

@@ -1,0 +1,8 @@
+on exitFrame
+  global userName, CODEUSERNAME, CODENUMBER
+  set CODEUSERNAME to EMPTY
+  set CODENUMBER to EMPTY
+  set the keyDownScript to "GETCODENAME1"
+  set the text of cast "CODENAME" to CODENUMBER
+  updateStage()
+end

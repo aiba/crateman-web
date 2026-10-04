@@ -1,0 +1,67 @@
+on restorepuzzle
+  global gridx, gridy, gridval, mg, dr, carry, crate, gameover, puzzle, puzzletxt, odr, solutionflag, solution, doornum, bridgeflag, speed, movescount
+  if puzzle = 0 then
+    exit
+  end if
+  set speed to 0
+  puppetSprite(15, 1)
+  set the trails of sprite 15 to 0
+  set solution to EMPTY
+  set the locH of sprite 14 to -2000
+  set the locV of sprite 14 to -2000
+  repeat with n = 19 to 20
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+    set the trails of sprite n to 1
+  end repeat
+  set flagd to 0
+  repeat with n = 1 to 234
+    if getAt(gridval, n) = 2 then
+      set the locH of sprite 20 to getAt(gridx, n)
+      set the locV of sprite 20 to getAt(gridy, n)
+      updateStage()
+    end if
+    if getAt(gridval, n) = 6 then
+      set the castNum of sprite 12 to cast "doorway"
+      set the castNum of sprite 13 to cast "doorway"
+      set flagd to flagd + 1
+      set the locH of sprite (11 + flagd) to getAt(gridx, n)
+      set the locV of sprite (11 + flagd) to getAt(gridy, n)
+      updateStage()
+    end if
+    if getAt(gridval, n) = 7 then
+      set the locH of sprite 22 to getAt(gridx, n)
+      set the locV of sprite 22 to getAt(gridy, n)
+      updateStage()
+    end if
+    if getAt(gridval, n) = 1 then
+      set the locH of sprite 19 to getAt(gridx, n)
+      set the locV of sprite 19 to getAt(gridy, n)
+      updateStage()
+    end if
+    if n = crate then
+      set the locH of sprite 14 to getAt(gridx, n)
+      set the locV of sprite 14 to getAt(gridy, n)
+      updateStage()
+    end if
+    set the locH of sprite 15 to getAt(gridx, mg)
+    set the locV of sprite 15 to getAt(gridy, mg)
+    if getAt(gridval, n) = 10 then
+      set the trails of sprite 21 to 1
+      set the locH of sprite 21 to getAt(gridx, n)
+      set the locV of sprite 21 to getAt(gridy, n)
+      updateStage()
+    end if
+  end repeat
+  if carry = 1 then
+    set the locH of sprite 20 to getAt(gridx, mg)
+    set the locV of sprite 20 to getAt(gridy, mg - 18)
+  end if
+  repeat with n = 19 to 22
+    set the trails of sprite n to 1
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+end

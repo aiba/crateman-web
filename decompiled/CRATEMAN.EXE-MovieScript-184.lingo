@@ -1,0 +1,21 @@
+on WRITENEWSCORES
+  global ALLSCORE, SCOREFIL, SCOREP, CODEWORDP, CODEWORD, SS1
+  if objectp(MYFILE) then
+    set MYFILE to 0
+  end if
+  set thefile to EMPTY
+  set SS1 to "0,"
+  repeat with n = 1 to 50
+    set thefile to thefile & SS1
+  end repeat
+  set MYFILE to new(xtra("FILEIO"))
+  createFile(MYFILE, the moviePath & "Crateman.skr")
+  openFile(MYFILE, the moviePath & "Crateman.skr", 0)
+  set HJJ to thefile
+  set CODEWORD to HJJ & "0,"
+  CIPHER()
+  set HJJ to CODEWORD
+  writeString(MYFILE, HJJ)
+  closeFile(MYFILE)
+  set MYFILE to 0
+end

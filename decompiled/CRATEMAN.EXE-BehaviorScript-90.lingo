@@ -1,0 +1,59 @@
+on exitFrame
+  global dotx, doty, UPG, puzzle, loadpuzzle
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  if UPG = 0 then
+    set upgn to 10
+  end if
+  if UPG = 1 then
+    set upgn to 50
+  end if
+  set flagx to 0
+  set flagy to 0
+  set x to the mouseH
+  set y to the mouseV
+  if rollOver(36) then
+    repeat with n = 1 to upgn
+      if (x > (getAt(dotx, n) + 2)) and (x < (getAt(dotx, n) + 81)) and (y > getAt(doty, n)) and (y < (getAt(doty, n) + 19)) then
+        set the locH of sprite 44 to getAt(dotx, n) + 12
+        set the locV of sprite 44 to getAt(doty, n) - 2
+        set puzzle to n
+        set the text of field "puzzletextnum" to "Puzzle: " & string(puzzle)
+        updateStage()
+      end if
+    end repeat
+  end if
+  if rollOver(46) then
+    set the castNum of sprite 46 to cast "demo2"
+    set the locH of sprite 44 to -2000
+    set the locV of sprite 44 to -2000
+    set puzzle to 0
+    updateStage()
+  else
+    set the castNum of sprite 46 to cast "demo1"
+    updateStage()
+  end if
+  if loadpuzzle <> 0 then
+    if loadpuzzle = 51 then
+      set the text of field "puzzletextnum" to "Demo"
+    end if
+    puppetSprite(36, 0)
+    puppetSprite(46, 0)
+    set puzzle to loadpuzzle
+    set the mouseDownScript to EMPTY
+    repeat with n = 42 to 44
+      set the locH of sprite n to -2000
+      set the locV of sprite n to -2000
+      updateStage()
+      puppetSprite(n, 0)
+    end repeat
+    if puzzle <> 0 then
+      go("select1")
+    end if
+  end if
+  go(the frame)
+end

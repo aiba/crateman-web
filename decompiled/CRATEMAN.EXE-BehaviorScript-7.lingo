@@ -1,0 +1,18 @@
+on exitFrame
+  global puzzle, solutionflag, solutioncnt, doorflag
+  set doorflag to 0
+  set solutioncnt to 0
+  putinpuzzle()
+  if puzzle = 51 then
+    go("demo")
+  end if
+  if solutionflag = 0 then
+    set the keyUpScript to "getdir"
+  end if
+  if solutionflag = 1 then
+    set the keyUpScript to EMPTY
+  end if
+  if solutionflag = 1 then
+    go("showsol")
+  end if
+end

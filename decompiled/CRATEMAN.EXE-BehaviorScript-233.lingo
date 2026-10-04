@@ -1,0 +1,7 @@
+on exitFrame
+  global UPG
+  set UPG to 1
+  if UPG = 1 then
+    go("SKIP")
+  end if
+end

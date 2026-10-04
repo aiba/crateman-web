@@ -1,0 +1,19 @@
+on CHECKFOR
+  global UPGCOUNT, UPG, WHICHDOC
+  if UPG = 1 then
+    exit
+  end if
+  if the key = "$" then
+    set UPGCOUNT to UPGCOUNT + 1
+  end if
+  if UPGCOUNT > 2 then
+    exit
+  end if
+  dontPassEvent()
+  if the key = "$" then
+    repeat with n = 1 to 52
+      puppetSprite(n, 0)
+    end repeat
+    go("GETUSER")
+  end if
+end

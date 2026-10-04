@@ -1,0 +1,4 @@
+on exitFrame
+  puppetSound("doorope1.wav")
+  updateStage()
+end

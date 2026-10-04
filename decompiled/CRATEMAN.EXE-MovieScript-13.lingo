@@ -1,0 +1,40 @@
+on MOVEMAN
+  global gridx, gridy, gridval, gridnum, mg, dr, odr, doorflag, doornum
+  if doorflag = 0 then
+    checkdoors()
+  end if
+  if (getAt(doornum, 1) <> mg) and (getAt(doornum, 2) <> mg) then
+    set doorflag to 0
+  end if
+  checkbridge()
+  manfall()
+  if (dr = 2) and (odr <> 2) then
+    set odr to dr
+    set the castNum of sprite 15 to cast "mr1"
+    updateStage()
+    exit
+  end if
+  if (dr = 4) and (odr <> 4) then
+    set odr to dr
+    set the castNum of sprite 15 to cast "ml1"
+    updateStage()
+    exit
+  end if
+  if dr = 2 then
+    if (getAt(gridval, mg + 1) = 0) or (getAt(gridval, mg + 1) = 7) or (getAt(gridval, mg + 1) = 6) then
+      if getAt(gridx, mg) = getAt(gridx, 18) then
+        exit
+      end if
+      walkright()
+    end if
+  end if
+  if dr = 4 then
+    if (getAt(gridval, mg - 1) = 0) or (getAt(gridval, mg - 1) = 7) or (getAt(gridval, mg - 1) = 6) then
+      if getAt(gridx, mg) = getAt(gridx, 1) then
+        exit
+      end if
+      walkleft()
+    end if
+  end if
+  manfall()
+end

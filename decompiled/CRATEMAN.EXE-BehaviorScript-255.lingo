@@ -1,0 +1,20 @@
+on exitFrame
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "return4"
+  else
+    set the castNum of sprite 48 to cast "return1"
+  end if
+  if rollOver(47) then
+    set the castNum of sprite 47 to cast "ORDER2"
+  else
+    set the castNum of sprite 47 to cast "ORDER1"
+  end if
+  updateStage()
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  go(the frame)
+end

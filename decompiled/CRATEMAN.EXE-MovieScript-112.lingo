@@ -1,0 +1,13 @@
+on getthepuzzle
+  global puzzle, loadpuzzle
+  if the clickOn = 48 then
+    set puzzle to 51
+    set loadpuzzle to 51
+  end if
+  if the clickOn <> 36 then
+    exit
+  end if
+  if puzzle <> 0 then
+    set loadpuzzle to puzzle
+  end if
+end

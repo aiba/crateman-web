@@ -1,0 +1,20 @@
+on checkbuttons
+  global UPG, puzzle, movescount
+  repeat with n = 25 to 30
+    if (puzzle = 0) and (n = 27) then
+    else
+      if (puzzle = 0) and (n = 28) then
+      else
+        if (UPG = 0) and (puzzle > 3) and (n = 28) then
+        else
+          puppetSprite(n, 1)
+          if rollOver(n) then
+            set the castNum of sprite n to 72 + n
+          else
+            set the castNum of sprite n to 66 + n
+          end if
+        end if
+      end if
+    end if
+  end repeat
+end

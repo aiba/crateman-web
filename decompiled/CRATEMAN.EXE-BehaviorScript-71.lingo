@@ -1,0 +1,17 @@
+on exitFrame
+  global puzzle, selcnt, res
+  set selcnt to selcnt + 1
+  if selcnt = 13 then
+    set the castNum of sprite 24 to cast "sel2"
+  end if
+  if selcnt > 25 then
+    set the castNum of sprite 24 to cast "sel1"
+    set selcnt to 0
+  end if
+  updateStage()
+  checkbuttons()
+  if puzzle <> 0 then
+    go("rs")
+  end if
+  go(the frame)
+end

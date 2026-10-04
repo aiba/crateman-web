@@ -1,0 +1,58 @@
+on printtext textString
+  global WHICHDOC
+  set printingFont to "courier"
+  set XObjFile to "pmatic.dll"
+  openXLib(XObjFile)
+  set printer to PrintOMatic(mnew)
+  if not objectp(printer) then
+    alert("There is no currently selected printer. Printing features are disabled.")
+  else
+    printer(mRegister, "PMAT130-989-01018")
+    printer(mSetMargins, 72, 72, 72, 72)
+    set w to printer(mGetPageWidth)
+    set h to printer(mGetPageHeight)
+    set printingFont to "arial"
+    printer(mSetTextSize, 18)
+    printer(mSetTextJust, "left")
+    printer(mSetTextStyle, "BOLD")
+    printer(mDrawText, "      SOLEAU SOFTWARE ORDER FORM", 14, -10)
+    printer(mSetTextSize, 12)
+    printer(mDrawText, " " & the date, w - 68, -10)
+    printer(mDrawText, "Soleau Software   163 Amsterdam Ave   Suite 213   New York   New York   10023", 9, h)
+    printer(mDrawText, "                      Citibank Account #  46862503   Routing # 021000089", 9, h + 14)
+    printer(mDrawText, "              For Orders:   Voice/Message: 212.721.2361   Fax: 212.873.4994", 9, h + 28)
+    set printingFont to "courier"
+    printer(mSetTextFont, printingFont)
+    if WHICHDOC = 2 then
+      printer(mSetTextSize, 10)
+    end if
+    if (WHICHDOC = 1) or (WHICHDOC = 3) then
+      printer(mSetTextSize, 12)
+    end if
+    printer(mSetTextStyle, "normal")
+    printer(mNewPage)
+    printer(mTextBox, 0, 0, w, h, 0)
+    printer(mSetText, textString, 1)
+    updateStage()
+    printer(mPrint)
+    printer(mReset)
+    printer(mSetDocumentName, "SOLEAU SOFTWARE GAMES")
+    set w to printer(mGetPageWidth)
+    set h to printer(mGetPageHeight)
+    printer(mRegister, "PMAT130-989-01018")
+    printer(mSetMargins, 72, 72, 72, 72)
+    printer(mNewPage)
+    printer(mSetTextSize, 18)
+    printer(mSetTextJust, "left")
+    printer(mSetTextStyle, "BOLD")
+    printer(mDrawText, "OTHER GAMES BY SOLEAU SOFTWARE", 0, -10)
+    printer(mTextBox, 0, 0, w, h, 0)
+    printer(mSetTextSize, 10)
+    printer(mSetTextStyle, "normal")
+    set textString1 to the text of cast "solgames"
+    printer(mSetText, textString1, 1)
+    printer(mPrint)
+    printer(mdispose)
+  end if
+  closeXLib(XObjFile)
+end

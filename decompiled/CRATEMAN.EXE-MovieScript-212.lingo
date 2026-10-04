@@ -1,0 +1,85 @@
+on GETUSERNAME
+  global NMLETTERS, NLET, userName
+  dontPassEvent()
+  set NMLETTERS to "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz. "
+  set NLET to EMPTY
+  set NLET to the key
+  if (the key = RETURN) and (length(userName) < 6) then
+    set userName to EMPTY
+    set the text of cast "CODENAME" to userName
+    updateStage()
+    beep()
+    exit
+  end if
+  if charToNum(the key) = 8 then
+    set userName to EMPTY
+    set the text of cast "CODENAME" to userName
+    updateStage()
+    exit
+  end if
+  if length(userName) > 30 then
+    beep()
+    exit
+  end if
+  if NMLETTERS contains NLET then
+    set userName to userName & NLET
+    set the text of cast "CODENAME" to userName
+  end if
+  if (the key = RETURN) and (length(userName) > 5) then
+    if char 1 of userName = " " then
+      set userName to EMPTY
+      set the text of cast "CODENAME" to userName
+      updateStage()
+      beep()
+      exit
+    end if
+    dontPassEvent()
+    set the keyDownScript to "GETCODENAME1"
+    go("GETCODE")
+  end if
+end
+
+on GETCODENAME1
+  global NMLETTERS, NLET, SCRAMBLENAME, userName, CODEUSERNAME, CODENUMBER, UPG, ZW, ZWW
+  set SCRAMBLENAME to EMPTY
+  set CODEUSERNAME to EMPTY
+  set UPG to 0
+  dontPassEvent()
+  set NMLETTERS to "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$"
+  set NLET to EMPTY
+  set NLET to the key
+  if (charToNum(the key) = 8) or (length(CODENUMBER) > 18) then
+    set CODENUMBER to EMPTY
+    set the text of cast "CODENAME" to CODENUMBER
+    updateStage()
+    exit
+  end if
+  if NMLETTERS contains NLET then
+    set CODENUMBER to CODENUMBER & NLET
+    set the text of cast "CODENAME" to CODENUMBER
+  end if
+  if the key = RETURN then
+    dontPassEvent()
+    set the keyDownScript to "EEMPTY"
+    set the mouseDownScript to EMPTY
+    repeat with n = 1 to length(CODENUMBER)
+      set ZW to char n of CODENUMBER
+      set ZWW to charToNum(ZW) + 55 + n
+      set CODEUSERNAME to CODEUSERNAME & numToChar(ZWW)
+    end repeat
+    set CODENUMBER to CODEUSERNAME
+    repeat with n = 1 to length(userName)
+      set ZW to char n of userName
+      set ZWW to charToNum(ZW) + 55 + n
+      set SCRAMBLENAME to SCRAMBLENAME & numToChar(ZWW)
+    end repeat
+    WRITEUPG()
+    CHECKUPG()
+    if UPG = 0 then
+      go("NOUPG")
+    end if
+    if UPG = 1 then
+      go("YESUPG")
+    end if
+  end if
+end

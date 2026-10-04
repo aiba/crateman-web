@@ -1,0 +1,7 @@
+on mouseUp
+  global solutionflag
+  set solutionflag to 0
+  puppetSound("click5.wav")
+  updateStage()
+  go("RS")
+end

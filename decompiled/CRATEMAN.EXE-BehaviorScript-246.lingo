@@ -1,0 +1,9 @@
+on exitFrame
+  global UPG
+  if UPG = 0 then
+    set TTIME to the timer
+    repeat while the timer < (TTIME + 120)
+    end repeat
+  end if
+  quit()
+end

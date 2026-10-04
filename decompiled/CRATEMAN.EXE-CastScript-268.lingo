@@ -1,0 +1,7 @@
+on mouseUp
+  global SOND
+  set SOND to 1
+  set the castNum of sprite 47 to cast "sndbut2"
+  set the soundEnabled to 0
+  updateStage()
+end

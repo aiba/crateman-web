@@ -1,0 +1,9 @@
+on exitFrame
+  global UPG, SOND
+  set SOND to 0
+  preloadMember(34, 35)
+  set the mouseDownScript to EMPTY
+  if UPG = 1 then
+    go("SKIP")
+  end if
+end

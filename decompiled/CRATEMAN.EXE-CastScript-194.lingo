@@ -1,0 +1,12 @@
+on mouseUp
+  global puzzle, loadpuzzle, solutionflag, carry, bridgeflag, speed
+  puppetSprite(48, 0)
+  puppetSprite(47, 0)
+  puppetSound("click5.wav")
+  updateStage()
+  set speed to 0
+  set carry to 0
+  set solutionflag to 0
+  set bridgeflag to 0
+  go("rs")
+end

@@ -1,0 +1,13 @@
+on exitFrame
+  global puzzle, solutionflag, solutioncnt, doorflag, DEMOCNT, speed
+  set speed to 0
+  set DEMOCNT to 150
+  puppetSprite(47, 1)
+  puppetSprite(48, 1)
+  set solutionflag to 1
+  set doorflag to 0
+  set the mouseDownScript to EMPTY
+  set the keyDownScript to EMPTY
+  set solutioncnt to 1
+  putinpuzzle()
+end

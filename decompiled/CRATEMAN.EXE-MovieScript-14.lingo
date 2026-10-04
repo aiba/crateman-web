@@ -1,0 +1,46 @@
+on LIFTCRATE
+  global gridx, gridy, gridval, carry, mg, dr
+  if dr = 2 then
+    set the castNum of sprite 15 to cast "upr1"
+  end if
+  if dr = 4 then
+    set the castNum of sprite 15 to cast "upl1"
+  end if
+  updateStage()
+  if (carry = 0) and (dr = 2) then
+    if getAt(gridval, mg - 17) = 0 then
+      puppetSound("lift.wav")
+      set the trails of sprite 20 to 0
+      set the locH of sprite 20 to getAt(gridx, mg + 1)
+      set the locV of sprite 20 to getAt(gridy, mg + 1)
+      updateStage()
+      setAt(gridval, mg + 1, 0)
+      set the locH of sprite 20 to getAt(gridx, mg - 18)
+      set the locV of sprite 20 to getAt(gridy, mg - 18)
+      updateStage()
+      set carry to 1
+    end if
+  end if
+  if (carry = 0) and (dr = 4) then
+    if getAt(gridval, mg - 19) = 0 then
+      puppetSound("lift.wav")
+      set the trails of sprite 20 to 0
+      set the locH of sprite 20 to getAt(gridx, mg - 1)
+      set the locV of sprite 20 to getAt(gridy, mg - 1)
+      updateStage()
+      setAt(gridval, mg - 1, 0)
+      set the locH of sprite 20 to getAt(gridx, mg - 18)
+      set the locV of sprite 20 to getAt(gridy, mg - 18)
+      updateStage()
+      set carry to 1
+    end if
+  end if
+  count7()
+  if dr = 2 then
+    set the castNum of sprite 15 to cast "mr1"
+  end if
+  if dr = 4 then
+    set the castNum of sprite 15 to cast "ml1"
+  end if
+  updateStage()
+end

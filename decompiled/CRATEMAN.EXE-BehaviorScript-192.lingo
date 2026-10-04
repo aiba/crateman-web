@@ -1,0 +1,4 @@
+on exitFrame
+  puppetSound("steps.wav")
+  updateStage()
+end

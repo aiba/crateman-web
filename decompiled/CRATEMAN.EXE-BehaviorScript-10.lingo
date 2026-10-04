@@ -1,0 +1,31 @@
+on exitFrame
+  global crate, mg, gameover, bridgeflag, solutionflag, res, puzzle, doornum, doorflag, dr, loadpuzzle
+  if solutionflag = 1 then
+    GETDIR()
+  end if
+  checkbuttons()
+  checkbridge()
+  checkforcrate()
+  if (gameover = 1) and (puzzle <> 51) and (solutionflag = 1) then
+    set gameover to 50
+  end if
+  if gameover = 50 then
+    set puzzle to 0
+    set loadpuzzle to 0
+    go("beg")
+  end if
+  if (gameover = 1) and (puzzle <> 51) and (solutionflag = 0) then
+    go("gover")
+  end if
+  manfall()
+  if doorflag = 0 then
+    checkdoors()
+  end if
+  if the optionDown then
+    quit()
+  end if
+  if the commandDown then
+    quit()
+  end if
+  go(the frame)
+end

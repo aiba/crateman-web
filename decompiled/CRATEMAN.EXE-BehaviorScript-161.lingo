@@ -1,0 +1,14 @@
+on exitFrame
+  global puzzle
+  repeat with n = 12 to 15
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+  repeat with n = 19 to 22
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+  set the text of field "PUZNUMTEXT" to "PUZZLE: " & string(puzzle)
+end

@@ -1,0 +1,8 @@
+on exitFrame
+  global puzzle
+  checkbuttons()
+  if puzzle <> 0 then
+    go("rs")
+  end if
+  go("beg")
+end

@@ -1,0 +1,16 @@
+on mouseUp
+  global puzzle
+  if puzzle <> 0 then
+    repeat with n = 12 to 15
+      set the locH of sprite n to -2000
+      set the locV of sprite n to -2000
+    end repeat
+  end if
+  puppetSound("click5.wav")
+  set the keyUpScript to EMPTY
+  updateStage()
+  play frame "Help"
+  if puzzle <> 0 then
+    set the keyUpScript to "getdir"
+  end if
+end

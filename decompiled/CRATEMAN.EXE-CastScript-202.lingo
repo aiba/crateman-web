@@ -1,0 +1,4 @@
+on mouseUp
+  global speed
+  set speed to 0
+end

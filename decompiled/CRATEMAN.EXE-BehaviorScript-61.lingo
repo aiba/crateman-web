@@ -1,0 +1,22 @@
+on exitFrame
+  global puzzle, speed
+  set speed to 0
+  repeat with n = 12 to 15
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+  end repeat
+  repeat with n = 19 to 22
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+  end repeat
+  repeat with n = 25 to 30
+    puppetSprite(n, 1)
+  end repeat
+  updateStage()
+  if puzzle = 51 then
+    go("demo")
+  end if
+  if puzzle <> 51 then
+    go("start")
+  end if
+end

@@ -1,0 +1,8 @@
+on mouseUp
+  set the keyDownScript to EMPTY
+  puppetSound("click5.wav")
+  puppetSprite(47, 0)
+  puppetSprite(50, 0)
+  puppetSprite(48, 0)
+  go("WEBO")
+end

@@ -1,0 +1,9 @@
+on mouseUp
+  global puzzle, loadpuzzle, solutionflag
+  set solutionflag to 0
+  set puzzle to 0
+  set loadpuzzle to 0
+  puppetSound("click5.wav")
+  updateStage()
+  go("beg")
+end

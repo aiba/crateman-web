@@ -1,0 +1,4 @@
+on exitFrame
+  puppetSound("thud4.wav")
+  updateStage()
+end

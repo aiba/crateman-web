@@ -1,0 +1,27 @@
+on exitFrame
+  global solution, bridgeflag, puzzle, solutionflag, solut, res
+  set res to 0
+  set solut to EMPTY
+  set solutionflag to 0
+  set puzzle to 0
+  puppetSprite(24, 1)
+  set bridgeflag to 0
+  set the text of field "puzzlefield" to "Please load a puzzle..."
+  set solution to EMPTY
+  repeat with n = 19 to 22
+    puppetSprite(n, 1)
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    set the trails of sprite n to 1
+  end repeat
+  repeat with n = 12 to 14
+    puppetSprite(n, 1)
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+    updateStage()
+  end repeat
+  puppetSprite(15, 1)
+  set the castNum of sprite 15 to cast "mr1"
+  set the locH of sprite 15 to -2000
+  set the locV of sprite 15 to -2000
+end

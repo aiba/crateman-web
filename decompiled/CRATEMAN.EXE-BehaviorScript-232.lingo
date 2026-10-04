@@ -1,0 +1,25 @@
+on exitFrame
+  global AOCNT
+  set AOCNT to AOCNT + 1
+  if AOCNT < 20 then
+    set the castNum of sprite 50 to cast "OLORDER1"
+  end if
+  if (AOCNT > 19) and (AOCNT < 40) then
+    set the castNum of sprite 50 to cast "OLORDER2"
+  end if
+  if AOCNT > 39 then
+    set AOCNT to 0
+  end if
+  if rollOver(47) then
+    set the castNum of sprite 47 to cast "ORDER2"
+  else
+    set the castNum of sprite 47 to cast "ORDER1"
+  end if
+  if rollOver(48) then
+    set the castNum of sprite 48 to cast "QUITT2"
+  else
+    set the castNum of sprite 48 to cast "QUITT1"
+  end if
+  updateStage()
+  go(the frame)
+end

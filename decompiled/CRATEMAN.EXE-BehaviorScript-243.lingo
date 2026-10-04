@@ -1,0 +1,8 @@
+on exitFrame
+  if rollOver(7) then
+    set the castNum of sprite 7 to cast "ORDER2"
+  else
+    set the castNum of sprite 7 to cast "ORDER1"
+  end if
+  updateStage()
+end

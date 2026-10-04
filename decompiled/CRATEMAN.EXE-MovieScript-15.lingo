@@ -1,0 +1,57 @@
+on placecrate
+  global gridx, gridy, gridval, mg, carry, dr, cf, crate
+  set cf to 0
+  if (dr = 2) and ((cf - 17) = crate) then
+    exit
+  end if
+  if (dr = 4) and ((cf - 19) = crate) then
+    exit
+  end if
+  if dr = 2 then
+    set the castNum of sprite 15 to cast "upr1"
+  end if
+  if dr = 4 then
+    set the castNum of sprite 15 to cast "upl1"
+  end if
+  set the trails of sprite 20 to 0
+  set the locH of sprite 20 to getAt(gridx, mg - 18)
+  set the locV of sprite 20 to getAt(gridy, mg - 18)
+  updateStage()
+  if dr = 2 then
+    set flag to 0
+    repeat with n = 1 to 3
+      set flag to flag + 10
+      set the locH of sprite 20 to getAt(gridx, mg - 18) + flag
+      updateStage()
+      count4()
+    end repeat
+    setAt(gridval, mg - 17, 2)
+    set cf to mg - 17
+  end if
+  if dr = 4 then
+    set flag to 0
+    repeat with n = 1 to 3
+      set flag to flag + 10
+      set the locH of sprite 20 to getAt(gridx, mg - 18) - flag
+      updateStage()
+      count4()
+    end repeat
+    setAt(gridval, mg - 19, 2)
+    set cf to mg - 19
+  end if
+  set the trails of sprite 20 to 1
+  updateStage()
+  set the locH of sprite 20 to -2000
+  set the locV of sprite 20 to -2000
+  if dr = 2 then
+    set the castNum of sprite 15 to cast "mr1"
+  end if
+  if dr = 4 then
+    set the castNum of sprite 15 to cast "ml1"
+  end if
+  updateStage()
+  set carry to 0
+  if cf <> 0 then
+    cratefall()
+  end if
+end

@@ -1,0 +1,10 @@
+on mouseUp
+  global puzzle, loadpuzzle
+  set puzzle to 51
+  set loadpuzzle to 51
+  puppetSound("click5.wav")
+  updateStage()
+  set the keyDownScript to EMPTY
+  set the keyUpScript to EMPTY
+  set the text of field "puzzletextnum" to "Demo"
+end

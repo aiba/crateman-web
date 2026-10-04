@@ -1,0 +1,3 @@
+on eempty
+  dontPassEvent()
+end

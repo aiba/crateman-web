@@ -1,0 +1,7 @@
+on mouseUp
+  puppetSprite(47, 0)
+  puppetSprite(48, 0)
+  puppetSprite(46, 0)
+  puppetSound("click5.wav")
+  go("soleau3")
+end

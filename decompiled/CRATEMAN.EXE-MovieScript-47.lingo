@@ -1,0 +1,61 @@
+on checkdoors
+  global crate, mg, gameover, bridgeflag, solutionflag, res, doornum, doorflag, dr
+  if doorflag = 0 then
+    if (mg = getAt(doornum, 1)) and (doorflag = 0) then
+      set the locH of sprite 15 to -2000
+      set the locV of sprite 15 to -2000
+      puppetSound("doorsnd.wav")
+      repeat with n = 134 to 142
+        set the castNum of sprite 12 to n
+        updateStage()
+        count4()
+      end repeat
+      set the castNum of sprite 12 to cast "doorway"
+      puppetSound("doorsnd.wav")
+      repeat with n = 142 to 149
+        set the castNum of sprite 13 to n
+        updateStage()
+        count4()
+      end repeat
+      set the castNum of sprite 13 to cast "doorway"
+      set doorflag to 1
+      set mg to getAt(doornum, 2)
+      if dr = 2 then
+        set the castNum of sprite 15 to cast "mr1"
+      end if
+      if dr = 4 then
+        set the castNum of sprite 15 to cast "ml1"
+      end if
+      set the locH of sprite 15 to getAt(gridx, mg)
+      set the locV of sprite 15 to getAt(gridy, mg)
+    end if
+    if (mg = getAt(doornum, 2)) and (doorflag = 0) then
+      set the locH of sprite 15 to -2000
+      set the locV of sprite 15 to -2000
+      puppetSound("doorsnd.wav")
+      repeat with n = 134 to 142
+        set the castNum of sprite 13 to n
+        updateStage()
+        count4()
+      end repeat
+      set the castNum of sprite 13 to cast "doorway"
+      puppetSound("doorsnd.wav")
+      repeat with n = 142 to 149
+        set the castNum of sprite 12 to n
+        updateStage()
+        count4()
+      end repeat
+      set the castNum of sprite 12 to cast "doorway"
+      set doorflag to 1
+      set mg to getAt(doornum, 1)
+      if dr = 2 then
+        set the castNum of sprite 15 to cast "mr1"
+      end if
+      if dr = 4 then
+        set the castNum of sprite 15 to cast "ml1"
+      end if
+      set the locH of sprite 15 to getAt(gridx, mg)
+      set the locV of sprite 15 to getAt(gridy, mg)
+    end if
+  end if
+end

@@ -1,0 +1,19 @@
+on mouseUp
+  global puzzle, loadpuzzle
+  puppetSound("click5.wav")
+  puppetSprite(46, 0)
+  repeat with n = 12 to 15
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+  end repeat
+  repeat with n = 19 to 22
+    set the locH of sprite n to -2000
+    set the locV of sprite n to -2000
+  end repeat
+  updateStage()
+  set puzzle to 0
+  set loadpuzzle to 0
+  puppetSprite(47, 0)
+  puppetSprite(48, 0)
+  go("beg")
+end
