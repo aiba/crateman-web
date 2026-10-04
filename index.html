@@ -224,7 +224,7 @@ if (TOUCH) {
   $('menu').append($('sol'), $('fast'), $('snd').parentNode);
   $('pad').append($('reset'), $('undo'));
   $('undo').textContent = 'Undo'; $('reset').textContent = 'Restart';
-  $('help').innerHTML = 'Swipe ← → to turn / walk / push &nbsp;·&nbsp; ↑ jump &nbsp;·&nbsp; ↓ lift / place<br>Keep dragging to keep moving';
+  $('help').innerHTML = 'Swipe ← → to turn / walk / push &nbsp;·&nbsp; ↑ jump &nbsp;·&nbsp; ↓ lift / place<br>One swipe = one move. Hold after swiping ← → to keep walking';
   $('reset').onclick = () => { if (!history.length || confirm('Restart this puzzle?')) load(puzzle); };
   $('more').onclick = () => $('menu').classList.toggle('open');
   $('menu').addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') $('menu').classList.remove('open'); });
@@ -238,28 +238,42 @@ if (TOUCH) {
     for (const a of Object.values(snd)) { a.muted = true; a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false; }).catch(() => { a.muted = false; }); }
   };
 
-  // A swipe is one move as soon as the finger has travelled FIRST px; dragging on without lifting
-  // repeats every MORE px (in whatever direction the finger is now going).
-  const FIRST = 22, MORE = { L: 46, R: 46, U: 64, D: 64 };
+  // One swipe = exactly one move, however far the finger travels; it fires once the finger has
+  // gone SWIPE px. To keep walking, end a left/right swipe by resting the finger: after HOLD ms
+  // without movement the move repeats until the finger lifts. Jump and lift/place never repeat.
+  const SWIPE = 22, HOLD = 350, STILL = 10;
   const ARROW = { L: '←', R: '→', U: '↑', D: '↓' };
   let drag = null;
+  const flash = (k, x, y) => {
+    const f = $('flash');
+    f.textContent = ARROW[k]; f.style.left = x + 'px'; f.style.top = y + 'px';
+    f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+  };
   addEventListener('pointerdown', (e) => {
     unlock();
     if (e.target.closest('button, select, label, input, #menu, #overlay')) return;
     $('menu').classList.remove('open');
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, last: null };
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, fired: null, restX: 0, restY: 0, restAt: 0 };
   });
   addEventListener('pointermove', (e) => {
     if (!drag || e.pointerId !== drag.id) return;
+    if (drag.fired) { // already used: just track whether the finger has come to rest
+      if (Math.hypot(e.clientX - drag.restX, e.clientY - drag.restY) > STILL) Object.assign(drag, { restX: e.clientX, restY: e.clientY, restAt: performance.now() });
+      return;
+    }
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < SWIPE) return;
     const k = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'R' : 'L') : (dy > 0 ? 'D' : 'U');
-    if (Math.max(Math.abs(dx), Math.abs(dy)) < (drag.last === k ? MORE[k] : FIRST)) return;
-    Object.assign(drag, { x: e.clientX, y: e.clientY, last: k });
-    input(k, 3);
-    const f = $('flash');
-    f.textContent = ARROW[k]; f.style.left = e.clientX + 'px'; f.style.top = e.clientY + 'px';
-    f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+    Object.assign(drag, { fired: k, restX: e.clientX, restY: e.clientY, restAt: performance.now() });
+    input(k, 1);
+    flash(k, e.clientX, e.clientY);
   });
+  setInterval(() => {
+    if (!drag || !drag.fired || 'UD'.includes(drag.fired) || playing || timer || pending.length || game.gameover) return;
+    if (performance.now() - drag.restAt < HOLD) return;
+    press(drag.fired);
+    flash(drag.fired, drag.restX, drag.restY);
+  }, 40);
   const end = (e) => { if (drag && e.pointerId === drag.id) drag = null; };
   addEventListener('pointerup', end); addEventListener('pointercancel', end);
   addEventListener('contextmenu', (e) => e.preventDefault());

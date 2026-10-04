@@ -22,7 +22,7 @@ Or clone and open `index.html` in a browser. No build step, no server, no depend
 | Esc | restart the puzzle |
 
 On a phone or tablet the page switches to a touch layout: swipe anywhere to move (← → walk, ↑ jump,
-↓ lift/place; keep dragging to keep moving) and tap **Undo** or **Restart**. Add `?mobile` or
+↓ lift/place; one swipe is one move, and resting your finger after a sideways swipe keeps walking) and tap **Undo** or **Restart**. Add `?mobile` or
 `?desktop` to the URL to force either layout.
 
 ## How it was made
