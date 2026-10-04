@@ -6,7 +6,9 @@ jumping, stacking crates, rolling balls, crossing collapsing bridges and using d
 
 ## Play
 
-Clone and open `index.html` in a browser. No build step, no server, no dependencies.
+**Play online: <https://aiba.github.io/crateman-web/>**
+
+Or clone and open `index.html` in a browser. No build step, no server, no dependencies.
 
     git clone https://github.com/aiba/crateman-web
     open crateman-web/index.html
@@ -18,6 +20,10 @@ Clone and open `index.html` in a browser. No build step, no server, no dependenc
 | ↓ | lift the crate in front of you / put it down |
 | Z or Backspace | undo one step (unlimited) |
 | Esc | restart the puzzle |
+
+On a phone or tablet the page switches to a touch layout: swipe anywhere to move (← → walk, ↑ jump,
+↓ lift/place; keep dragging to keep moving) and tap **Undo** or **Restart**. Add `?mobile` or
+`?desktop` to the URL to force either layout.
 
 ## How it was made
 

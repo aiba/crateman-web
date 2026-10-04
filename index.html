@@ -1,13 +1,57 @@
 <!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Crate Man</title>
 <style>
   body { background: #111; color: #ddd; font: 14px system-ui; text-align: center; margin: 12px; }
   canvas { width: 960px; height: 720px; image-rendering: pixelated; display: block; margin: 8px auto; }
   select, button { font: inherit; margin: 0 4px; }
   #status { min-height: 1.4em; }
+  #overlay, #flash, #more, #menu, #pad { display: none; }
+
+  /* Phones and tablets (html.touch is set by the script): full-screen, swipe anywhere, big buttons. */
+  html.touch, html.touch body { overflow: hidden; overscroll-behavior: none; touch-action: none;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  html.touch body { position: fixed; inset: 0; margin: 0; font-size: 15px; display: grid;
+    grid-template: "top" auto "stage" 1fr "help" auto "pad" auto / minmax(0, 1fr);
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+  html.touch #bar { display: none; }
+  html.touch #top { grid-area: top; display: flex; align-items: center; gap: 8px; padding: 6px 10px; min-width: 0; }
+  html.touch #status { flex: 1; min-width: 0; min-height: 0; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html.touch #stage { grid-area: stage; position: relative; min-height: 0; min-width: 0; }
+  html.touch canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; margin: 0; }
+  html.touch #help { grid-area: help; padding: 4px 10px; color: #999; font-size: 13px; }
+  html.touch #pad { grid-area: pad; display: flex; gap: 10px; padding: 8px 10px 10px; }
+  html.touch select, html.touch button { margin: 0; min-height: 44px; padding: 0 14px; font-size: 16px; color: #eee;
+    background: #2b2b2b; border: 1px solid #555; border-radius: 10px; touch-action: manipulation; }
+  html.touch button:active { background: #444; }
+  html.touch #pad button { flex: 1; min-height: 58px; font-size: 19px; font-weight: 600; border-radius: 14px; }
+  html.touch #pad #undo { flex: 2; background: #1d4d86; border-color: #3b7fd0; }
+  html.touch #pad #undo:active { background: #2a66ad; }
+  html.touch #more { display: block; }
+  html.touch #menu.open { display: flex; flex-direction: column; gap: 8px; position: absolute; z-index: 5; right: 10px; top: 56px;
+    padding: 10px; background: #1c1c1c; border: 1px solid #555; border-radius: 12px; box-shadow: 0 6px 24px #000a; }
+  html.touch #menu label { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 6px; font-size: 16px; }
+  html.touch #menu input { width: 22px; height: 22px; }
+  html.touch #overlay.open { display: flex; flex-direction: column; gap: 12px; align-items: center; position: absolute; z-index: 4;
+    left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 18px 22px; background: #000c; border: 1px solid #777;
+    border-radius: 16px; font-size: 20px; white-space: nowrap; }
+  html.touch #overlay div { display: flex; gap: 10px; }
+  html.touch #flash.on { display: block; position: fixed; z-index: 6; margin: -70px 0 0 -24px; width: 48px; height: 48px;
+    font: 34px/48px system-ui; color: #fff; background: #0008; border-radius: 50%; pointer-events: none; animation: flash .35s ease-out forwards; }
+  @keyframes flash { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(1.5); } }
+  @media (orientation: landscape) {
+    html.touch body { grid-template: "stage top" auto "stage help" 1fr "stage pad" auto / minmax(0, 1fr) minmax(150px, 22vw); }
+    html.touch #top { flex-wrap: wrap; }
+    html.touch #top select { flex: 1; }
+    html.touch #status { flex-basis: 100%; white-space: normal; text-align: center; order: 3; }
+    html.touch #help { align-self: center; }
+    html.touch #pad { flex-direction: column-reverse; }
+    html.touch #pad #undo { flex: 2; }
+    html.touch #menu.open { top: auto; bottom: 10px; }
+  }
 </style>
-<div>
+<div id="bar">
   <select id="pick"></select>
   <button id="undo">Undo (Z)</button>
   <button id="reset">Reset (Esc)</button>
@@ -15,9 +59,16 @@
   <button id="fast">Speed: normal</button>
   <label><input type="checkbox" id="snd" checked> sound</label>
 </div>
-<canvas id="c" width="640" height="480"></canvas>
+<div id="stage">
+  <canvas id="c" width="640" height="480"></canvas>
+  <div id="overlay"><span id="overlayText"></span><div><button id="stay">Stay</button><button id="next">Next puzzle</button></div></div>
+</div>
 <div id="status"></div>
-<div>← → turn / walk / push ball &nbsp;·&nbsp; ↑ jump &nbsp;·&nbsp; ↓ lift / place crate &nbsp;·&nbsp; Z undo</div>
+<div id="help">← → turn / walk / push ball &nbsp;·&nbsp; ↑ jump &nbsp;·&nbsp; ↓ lift / place crate &nbsp;·&nbsp; Z undo</div>
+<div id="top"><button id="more" aria-label="More">⋯</button></div>
+<div id="menu"></div>
+<div id="pad"></div>
+<div id="flash"></div>
 <script src="engine.js"></script>
 <script src="data.js"></script>
 <script src="assets/cast.js"></script>
@@ -34,8 +85,12 @@ const snd = {};
 for (const s of ['steps', 'thud', 'lift', 'bell', 'thud1', 'ballroll', 'doorsnd']) snd[s] = new Audio(`assets/snd/${s}.wav`);
 function draw(cast, x, y) { const e = CRATEMAN_CAST[cast]; ctx.drawImage(img[cast], x + e.ox, y + e.oy); }
 
+// Phone/tablet UI when the primary input is touch; ?mobile or ?desktop in the URL forces either.
+const q = new URLSearchParams(location.search);
+const TOUCH = q.has('mobile') || (!q.has('desktop') && matchMedia('(hover: none) and (pointer: coarse)').matches);
+
 // --- state ---
-let game, puzzle = +(localStorage.cmPuzzle || 1), queue = [], playing = null, fast = false, timer = null, pendingKey = null, history = [];
+let game, puzzle = +(localStorage.cmPuzzle || 1), queue = [], playing = null, fast = false, timer = null, pending = [], history = [];
 const solved = new Set(JSON.parse(localStorage.cmSolved || '[]'));
 
 function snapshot(g, ticks, sounds) {
@@ -61,8 +116,9 @@ function render(s) {
 
 function load(n) {
   puzzle = n; localStorage.cmPuzzle = n;
-  clearTimeout(timer); timer = null; queue = []; playing = null; pendingKey = null;
+  clearTimeout(timer); timer = null; queue = []; playing = null; pending = [];
   history = [];
+  $('overlay').classList.remove('open');
   attach(new Game(puzzles[n - 1]));
   $('pick').value = n; $('sol').textContent = 'Play solution';
   status();
@@ -77,13 +133,14 @@ function attach(g) {
 // One undo step = one keypress that changed something; history goes back to the puzzle start.
 function undo() {
   if (playing || !history.length) return;
-  clearTimeout(timer); timer = null; queue = []; pendingKey = null;
+  clearTimeout(timer); timer = null; queue = []; pending = [];
+  $('overlay').classList.remove('open');
   attach(history.pop());
   status();
   render(snapshot(game, 0, []));
 }
 function status(extra) {
-  $('status').textContent = `${puzzle === 51 ? 'Tutorial' : 'Puzzle ' + puzzle} · moves ${game.moves} · undo steps ${history.length}` + (extra ? ' · ' + extra : '');
+  $('status').textContent = (TOUCH ? `${game.moves} moves` : `${puzzle === 51 ? 'Tutorial' : 'Puzzle ' + puzzle} · moves ${game.moves} · undo steps ${history.length}`) + (extra ? ' · ' + extra : '');
 }
 
 function press(k) {
@@ -108,13 +165,26 @@ function pump() {
   if (game.gameover) {
     if (!playing && puzzle <= 50) { solved.add(puzzle); localStorage.cmSolved = JSON.stringify([...solved]); fillPicker(); }
     status(playing ? 'solution finished' : 'SOLVED');
+    if (!playing) {
+      $('overlayText').textContent = `Solved in ${game.moves} moves!`;
+      $('next').style.display = puzzle < 50 ? '' : 'none';
+      $('overlay').classList.add('open');
+    }
     playing = null; $('sol').textContent = 'Play solution';
     return;
   }
   if (playing) {
     const k = playing.shift();
     if (k) press(k); else { playing = null; $('sol').textContent = 'Play solution'; }
-  } else if (pendingKey) { const k = pendingKey; pendingKey = null; press(k); }
+  } else if (pending.length) press(pending.shift());
+}
+
+// Run a move now, or buffer it (up to `depth` moves) while an animation is playing.
+function input(k, depth) {
+  if (playing) return;
+  if (!timer) return press(k);
+  if (pending.length >= depth) pending.shift();
+  pending.push(k);
 }
 
 function fillPicker() {
@@ -129,7 +199,7 @@ addEventListener('keydown', (e) => {
   const k = KEYS[e.key];
   if (!k || playing) return;
   e.preventDefault();
-  if (timer) pendingKey = k; else press(k);
+  input(k, 1);
 });
 $('pick').onchange = (e) => { load(+e.target.value); e.target.blur(); };
 $('reset').onclick = () => load(puzzle);
@@ -142,6 +212,58 @@ $('sol').onclick = () => {
   $('sol').textContent = 'Stop solution';
   pump();
 };
+
+// --- phones and tablets: swipe anywhere to move, big Undo/Restart buttons ---
+if (TOUCH) {
+  document.documentElement.classList.add('touch');
+  // Crop the brick frame so the playfield fills the screen.
+  const CROP = { x: 42, y: 30, w: 556, h: 406 };
+  Object.assign($('c'), { width: CROP.w, height: CROP.h });
+  ctx.translate(-CROP.x, -CROP.y);
+  $('top').prepend($('pick'), $('status'));
+  $('menu').append($('sol'), $('fast'), $('snd').parentNode);
+  $('pad').append($('reset'), $('undo'));
+  $('undo').textContent = 'Undo'; $('reset').textContent = 'Restart';
+  $('help').innerHTML = 'Swipe ← → to turn / walk / push &nbsp;·&nbsp; ↑ jump &nbsp;·&nbsp; ↓ lift / place<br>Keep dragging to keep moving';
+  $('reset').onclick = () => { if (!history.length || confirm('Restart this puzzle?')) load(puzzle); };
+  $('more').onclick = () => $('menu').classList.toggle('open');
+  $('menu').addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') $('menu').classList.remove('open'); });
+  $('stay').onclick = () => $('overlay').classList.remove('open');
+  $('next').onclick = () => load(puzzle + 1);
+
+  // iOS only lets audio start from inside a touch handler: prime every sound on the first touch.
+  let unlocked = false;
+  const unlock = () => {
+    if (unlocked) return; unlocked = true;
+    for (const a of Object.values(snd)) { a.muted = true; a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false; }).catch(() => { a.muted = false; }); }
+  };
+
+  // A swipe is one move as soon as the finger has travelled FIRST px; dragging on without lifting
+  // repeats every MORE px (in whatever direction the finger is now going).
+  const FIRST = 22, MORE = { L: 46, R: 46, U: 64, D: 64 };
+  const ARROW = { L: '←', R: '→', U: '↑', D: '↓' };
+  let drag = null;
+  addEventListener('pointerdown', (e) => {
+    unlock();
+    if (e.target.closest('button, select, label, input, #menu, #overlay')) return;
+    $('menu').classList.remove('open');
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, last: null };
+  });
+  addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    const k = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'R' : 'L') : (dy > 0 ? 'D' : 'U');
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < (drag.last === k ? MORE[k] : FIRST)) return;
+    Object.assign(drag, { x: e.clientX, y: e.clientY, last: k });
+    input(k, 3);
+    const f = $('flash');
+    f.textContent = ARROW[k]; f.style.left = e.clientX + 'px'; f.style.top = e.clientY + 'px';
+    f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+  });
+  const end = (e) => { if (drag && e.pointerId === drag.id) drag = null; };
+  addEventListener('pointerup', end); addEventListener('pointercancel', end);
+  addEventListener('contextmenu', (e) => e.preventDefault());
+}
 fillPicker();
 Promise.all(Object.values(img).map((i) => i.decode().catch(() => {}))).then(() => load(puzzle));
 </script>
